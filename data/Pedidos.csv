@@ -1,0 +1,99 @@
+Estacao Central1,L1,Estacao_Carregamento,Lanhas,L3,Ponto_Coleta,2,alta,sim,15
+Estacao Central2,L2,Posto_Combustivel,Valpaços,L15,Estacao_Carregamento,3,media,nao,20
+Lanhas,L3,Ponto_Coleta,Estacao Central1,L1,Estacao_Carregamento,1,baixa,sim,25
+Alvito S. Pedro,L4,Ponto_Coleta,Carvalhas,L16,Estacao_Carregamento,4,alta,nao,10
+Panque,L5,Ponto_Coleta,Chorente,L18,Posto_Combustivel,2,media,sim,18
+Balugães,L6,Ponto_Coleta,Estacao Central2,L2,Posto_Combustivel,3,alta,sim,12
+Aguiar,L7,Ponto_Coleta,Mariz,L17,Estacao_Carregamento,1,baixa,nao,30
+Cabaços,L8,Ponto_Coleta,Sabariz,L19,Posto_Combustivel,2,media,sim,22
+Pico de Regalados,L9,Ponto_Coleta,Dossãos,L20,Posto_Combustivel,4,alta,nao,8
+Soutelo,L10,Ponto_Coleta,Estacao Central1,L1,Estacao_Carregamento,3,baixa,sim,28
+Escariz,L11,Ponto_Coleta,Valpaços,L15,Estacao_Carregamento,2,media,nao,16
+Gueral,L12,Ponto_Coleta,Chorente,L18,Posto_Combustivel,1,alta,sim,14
+Valbom,L13,Ponto_Coleta,Carvalhas,L16,Estacao_Carregamento,3,baixa,nao,24
+Bastuço Santo Estevão,L14,Ponto_Coleta,Estacao Central2,L2,Posto_Combustivel,4,media,sim,11
+Valpaços,L15,Estacao_Carregamento,Lanhas,L3,Ponto_Coleta,2,alta,nao,19
+Carvalhas,L16,Estacao_Carregamento,Alvito S. Pedro,L4,Ponto_Coleta,1,baixa,sim,26
+Mariz,L17,Estacao_Carregamento,Panque,L5,Ponto_Coleta,3,media,nao,21
+Chorente,L18,Posto_Combustivel,Balugães,L6,Ponto_Coleta,2,alta,sim,13
+Sabariz,L19,Posto_Combustivel,Aguiar,L7,Ponto_Coleta,4,baixa,nao,17
+Dossãos,L20,Posto_Combustivel,Cabaços,L8,Ponto_Coleta,3,media,sim,23
+Estacao Central1,L1,Estacao_Carregamento,Pico de Regalados,L9,Ponto_Coleta,1,alta,nao,9
+Estacao Central2,L2,Posto_Combustivel,Soutelo,L10,Ponto_Coleta,2,baixa,sim,27
+Lanhas,L3,Ponto_Coleta,Escariz,L11,Ponto_Coleta,4,media,nao,15
+Alvito S. Pedro,L4,Ponto_Coleta,Gueral,L12,Ponto_Coleta,3,alta,sim,12
+Panque,L5,Ponto_Coleta,Valbom,L13,Ponto_Coleta,2,baixa,nao,20
+Balugães,L6,Ponto_Coleta,Bastuço Santo Estevão,L14,Ponto_Coleta,1,media,sim,18
+Aguiar,L7,Ponto_Coleta,Valpaços,L15,Estacao_Carregamento,3,alta,nao,10
+Cabaços,L8,Ponto_Coleta,Carvalhas,L16,Estacao_Carregamento,4,baixa,sim,25
+Pico de Regalados,L9,Ponto_Coleta,Mariz,L17,Estacao_Carregamento,2,media,nao,16
+Soutelo,L10,Ponto_Coleta,Chorente,L18,Posto_Combustivel,3,alta,sim,14
+Escariz,L11,Ponto_Coleta,Sabariz,L19,Posto_Combustivel,1,baixa,nao,22
+Gueral,L12,Ponto_Coleta,Dossãos,L20,Posto_Combustivel,4,media,sim,11
+Valbom,L13,Ponto_Coleta,Estacao Central1,L1,Estacao_Carregamento,2,alta,nao,19
+Bastuço Santo Estevão,L14,Ponto_Coleta,Estacao Central2,L2,Posto_Combustivel,3,baixa,sim,24
+Valpaços,L15,Estacao_Carregamento,Lanhas,L3,Ponto_Coleta,1,media,nao,17
+Carvalhas,L16,Estacao_Carregamento,Alvito S. Pedro,L4,Ponto_Coleta,4,alta,sim,13
+Mariz,L17,Estacao_Carregamento,Panque,L5,Ponto_Coleta,2,baixa,nao,21
+Chorente,L18,Posto_Combustivel,Balugães,L6,Ponto_Coleta,3,media,sim,15
+Sabariz,L19,Posto_Combustivel,Aguiar,L7,Ponto_Coleta,1,alta,nao,8
+Dossãos,L20,Posto_Combustivel,Cabaços,L8,Ponto_Coleta,4,baixa,sim,28
+Estacao Central1,L1,Estacao_Carregamento,Pico de Regalados,L9,Ponto_Coleta,2,media,nao,18
+Estacao Central2,L2,Posto_Combustivel,Soutelo,L10,Ponto_Coleta,3,alta,sim,12
+Lanhas,L3,Ponto_Coleta,Escariz,L11,Ponto_Coleta,1,baixa,nao,26
+Alvito S. Pedro,L4,Ponto_Coleta,Gueral,L12,Ponto_Coleta,4,media,sim,16
+Panque,L5,Ponto_Coleta,Valbom,L13,Ponto_Coleta,2,alta,nao,10
+Balugães,L6,Ponto_Coleta,Bastuço Santo Estevão,L14,Ponto_Coleta,3,baixa,sim,23
+Aguiar,L7,Ponto_Coleta,Valpaços,L15,Estacao_Carregamento,1,media,nao,19
+Cabaços,L8,Ponto_Coleta,Carvalhas,L16,Estacao_Carregamento,4,alta,sim,14
+Pico de Regalados,L9,Ponto_Coleta,Mariz,L17,Estacao_Carregamento,2,baixa,nao,22
+Soutelo,L10,Ponto_Coleta,Chorente,L18,Posto_Combustivel,3,media,sim,11
+Escariz,L11,Ponto_Coleta,Sabariz,L19,Posto_Combustivel,1,alta,nao,27
+Gueral,L12,Ponto_Coleta,Dossãos,L20,Posto_Combustivel,4,baixa,sim,15
+Valbom,L13,Ponto_Coleta,Estacao Central1,L1,Estacao_Carregamento,2,media,nao,20
+Bastuço Santo Estevão,L14,Ponto_Coleta,Estacao Central2,L2,Posto_Combustivel,3,alta,sim,13
+Valpaços,L15,Estacao_Carregamento,Lanhas,L3,Ponto_Coleta,1,baixa,nao,24
+Carvalhas,L16,Estacao_Carregamento,Alvito S. Pedro,L4,Ponto_Coleta,4,media,sim,17
+Mariz,L17,Estacao_Carregamento,Panque,L5,Ponto_Coleta,2,alta,nao,9
+Chorente,L18,Posto_Combustivel,Balugães,L6,Ponto_Coleta,3,baixa,sim,21
+Sabariz,L19,Posto_Combustivel,Aguiar,L7,Ponto_Coleta,1,media,nao,16
+Dossãos,L20,Posto_Combustivel,Cabaços,L8,Ponto_Coleta,4,alta,sim,12
+Estacao Central1,L1,Estacao_Carregamento,Pico de Regalados,L9,Ponto_Coleta,2,baixa,nao,25
+Estacao Central2,L2,Posto_Combustivel,Soutelo,L10,Ponto_Coleta,3,media,sim,18
+Lanhas,L3,Ponto_Coleta,Escariz,L11,Ponto_Coleta,1,alta,nao,10
+Alvito S. Pedro,L4,Ponto_Coleta,Gueral,L12,Ponto_Coleta,4,baixa,sim,22
+Panque,L5,Ponto_Coleta,Valbom,L13,Ponto_Coleta,2,media,nao,14
+Balugães,L6,Ponto_Coleta,Bastuço Santo Estevão,L14,Ponto_Coleta,3,alta,sim,19
+Aguiar,L7,Ponto_Coleta,Valpaços,L15,Estacao_Carregamento,1,baixa,nao,26
+Cabaços,L8,Ponto_Coleta,Carvalhas,L16,Estacao_Carregamento,4,media,sim,11
+Pico de Regalados,L9,Ponto_Coleta,Mariz,L17,Estacao_Carregamento,2,alta,nao,23
+Soutelo,L10,Ponto_Coleta,Chorente,L18,Posto_Combustivel,3,baixa,sim,15
+Escariz,L11,Ponto_Coleta,Sabariz,L19,Posto_Combustivel,1,media,nao,20
+Gueral,L12,Ponto_Coleta,Dossãos,L20,Posto_Combustivel,4,alta,sim,8
+Valbom,L13,Ponto_Coleta,Estacao Central1,L1,Estacao_Carregamento,2,baixa,nao,28
+Bastuço Santo Estevão,L14,Ponto_Coleta,Estacao Central2,L2,Posto_Combustivel,3,media,sim,17
+Valpaços,L15,Estacao_Carregamento,Lanhas,L3,Ponto_Coleta,1,alta,nao,12
+Carvalhas,L16,Estacao_Carregamento,Alvito S. Pedro,L4,Ponto_Coleta,4,baixa,sim,21
+Mariz,L17,Estacao_Carregamento,Panque,L5,Ponto_Coleta,2,media,nao,16
+Chorente,L18,Posto_Combustivel,Balugães,L6,Ponto_Coleta,3,alta,sim,10
+Sabariz,L19,Posto_Combustivel,Aguiar,L7,Ponto_Coleta,1,baixa,nao,24
+Dossãos,L20,Posto_Combustivel,Cabaços,L8,Ponto_Coleta,4,media,sim,13
+Estacao Central1,L1,Estacao_Carregamento,Pico de Regalados,L9,Ponto_Coleta,2,alta,nao,18
+Estacao Central2,L2,Posto_Combustivel,Soutelo,L10,Ponto_Coleta,3,baixa,sim,22
+Lanhas,L3,Ponto_Coleta,Escariz,L11,Ponto_Coleta,1,media,nao,14
+Alvito S. Pedro,L4,Ponto_Coleta,Gueral,L12,Ponto_Coleta,4,alta,sim,9
+Panque,L5,Ponto_Coleta,Valbom,L13,Ponto_Coleta,2,baixa,nao,25
+Balugães,L6,Ponto_Coleta,Bastuço Santo Estevão,L14,Ponto_Coleta,3,media,sim,15
+Aguiar,L7,Ponto_Coleta,Valpaços,L15,Estacao_Carregamento,1,alta,nao,20
+Cabaços,L8,Ponto_Coleta,Carvalhas,L16,Estacao_Carregamento,4,baixa,sim,11
+Pico de Regalados,L9,Ponto_Coleta,Mariz,L17,Estacao_Carregamento,2,media,nao,19
+Soutelo,L10,Ponto_Coleta,Chorente,L18,Posto_Combustivel,3,alta,sim,12
+Escariz,L11,Ponto_Coleta,Sabariz,L19,Posto_Combustivel,1,baixa,nao,27
+Gueral,L12,Ponto_Coleta,Dossãos,L20,Posto_Combustivel,4,media,sim,16
+Valbom,L13,Ponto_Coleta,Estacao Central1,L1,Estacao_Carregamento,2,alta,nao,10
+Bastuço Santo Estevão,L14,Ponto_Coleta,Estacao Central2,L2,Posto_Combustivel,3,baixa,sim,23
+Valpaços,L15,Estacao_Carregamento,Lanhas,L3,Ponto_Coleta,1,media,nao,17
+Carvalhas,L16,Estacao_Carregamento,Alvito S. Pedro,L4,Ponto_Coleta,4,alta,sim,14
+Mariz,L17,Estacao_Carregamento,Panque,L5,Ponto_Coleta,2,baixa,nao,21
+Chorente,L18,Posto_Combustivel,Balugães,L6,Ponto_Coleta,3,media,sim,8
+Sabariz,L19,Posto_Combustivel,Aguiar,L7,Ponto_Coleta,1,alta,nao,26

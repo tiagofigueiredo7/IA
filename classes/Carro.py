@@ -1,6 +1,5 @@
-import Localizacao
-
-# Classe Carro
+from .Localizacao import Localizacao
+from .Tipo_Localizacao import Tipo_Localizacao
 
 class Carro:
      def __init__(
@@ -13,7 +12,7 @@ class Carro:
         custo_km,
         impacto_ambiental,
         disponibilidade,
-        localizacao: 'Localizacao',
+        localizacao: Localizacao,
         tempo_reabastecimento
      ):
         self.id = id
@@ -58,7 +57,7 @@ class Carro:
           return self.tempo_reabastecimento
      
      def setID(self, id):
-          seld.id = id
+          self.id = id
      
      def setTipoCombustivel(self, tipocombustivel):
           self.tipo_combustivel = tipocombustivel
@@ -79,7 +78,7 @@ class Carro:
           self.impacto_ambiental = impactoAmbiental
 
      def __str__(self):
-          return f"Carro(id = {self.id} ,tipo_combustivel={self.tipo_combustivel}, autonomia_max={self.autonomia_max}, autonomia_atual={self.autonomia_atual}, capacidade_passageiros={self.capacidade_passageiros}, custo_km={self.custo_km}, impacto_ambiental={self.impacto_ambiental}, disponibilidade={self.disponibilidade}, localizacao={self.localizacao}, tempo_reabastecimento={self.tempo_reabastecimento})"
+          return f"Carro(ID: {self.id}, Tipo Combustivel: {self.tipo_combustivel}, Autonomia Max: {self.autonomia_max}, Autonomia Atual: {self.autonomia_atual}, Capacidade Passageiros: {self.capacidade_passageiros}, Custo KM: {self.custo_km}, Impacto Ambiental: {self.impacto_ambiental}, Disponibilidade: {self.disponibilidade}, Localizacao: {self.localizacao}, Tempo Reabastecimento: {self.tempo_reabastecimento})"
      
      def reabastecer(self):
           self.autonomia_atual = self.autonomia_max
@@ -87,10 +86,11 @@ class Carro:
      def is_disponivel(self):
           return self.disponibilidade
      
-     def atualizar_localizacao(self, nova_localizacao: 'Localizacao'):
+     def atualizar_localizacao(self, nova_localizacao: Localizacao):
           self.localizacao = nova_localizacao
      
-     def parse_car(self, linha):
+     @staticmethod
+     def parse_car(linha):
           id = linha[0]
           tipo_combustivel = linha[1]
           autonomia_max = float(linha[2])
@@ -99,11 +99,11 @@ class Carro:
           custo_km = float(linha[5])
           impacto_ambiental = float(linha[6])
           disponibilidade = linha[7].lower() == 'true'
-          latitude = float(linha[8])
-          longitude = float(linha[9])
-          localizacao = Localizacao(latitude, longitude)
-          tempo_reabastecimento = int(linha[10])
-          
+
+          localizacao = Localizacao.parse_localizacao(linha[8:11])
+
+          tempo_reabastecimento = int(linha[11])
+
           return Carro(
                id,
                tipo_combustivel,
@@ -116,4 +116,3 @@ class Carro:
                localizacao,
                tempo_reabastecimento
           )
-          
