@@ -1,8 +1,8 @@
-
-from classes.Carro import Carro
-from classes.Pedido import Pedido
 from classes.Hora import Hora
 from parsers import parser
+from GestorFrota import GestorFrota
+from GestorPedidos import GestorPedidos
+from Simulador import Simulador
 
 def main():
      
@@ -10,28 +10,26 @@ def main():
 
      carros, pedidos = parser( "data/Carros.csv", "data/Pedidos.csv")
 
-     tempo = Hora(0,0)
+     tempo = Hora(6,0)
 
-     while (True):
-          ## gera trafego na cidade quando chegam horas de ponta
+     gestor_frota = GestorFrota(carros)
+     gestor_pedidos = GestorPedidos()
 
-          ##adicionaPedidos(pedidos)
-          ## logica principal 
-          ## tem um ciclo que gera um random 'x' entre 5 e 10 ( ou qq intervalo de valores ) 
-          # e adiciona 'x' Pedidos à lista de Pedidos ativa
+     while True:##not simulador.terminou():
+          # Atualiza pedidos dinâmicos
+          gestor_pedidos.adicionaPedidos(pedidos)
+          
+          # Executa lógica principal de alocação de veículos
+           ##simulador.executa_ciclo()
 
-          tempo.incrementaMinuto()
+          # Avança o tempo
+          tempo = tempo.incrementaMinuto()       
 
           break
 
-          
-          
 
      ## calcula métricas
      ## temos de guardar os tempos, consumos e assim .....
-
-     print("Hello, World!")
-
 
 if __name__ == "__main__":
     main()
