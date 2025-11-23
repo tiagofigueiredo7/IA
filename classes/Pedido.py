@@ -2,12 +2,12 @@ from .Localizacao import Localizacao
 
 class Pedido:
      def __init__(self,
-                  origem: Localizacao,
-                  destino: Localizacao,
-                  numPassageiros,
-                  prioridade,
-                  preferenciaAmbiental,
-                  tempoEsperaMax):
+                  origem,
+                  destino,
+                  numPassageiros: int,
+                  prioridade: bool,
+                  preferenciaAmbiental: bool,
+                  tempoEsperaMax: int ):
           self.origem = origem
           self.destino = destino
           self.numPassageiros = numPassageiros

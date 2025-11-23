@@ -21,8 +21,6 @@ class Hora:
      def __str__(self):
           return f"{self.hora:02}:{self.minuto:02}"
      
-     def ehHoraPonta(self):
+     def eHoraPonta(self):
           ## Define horas de ponta como 7:00-9:00 e 17:00-19:00
-          if (self.hora >= 7 and self.hora < 9) or (self.hora >= 17 and self.hora < 19):
-               return True
-          return False
+          return self.hora in range(7,9) or self.hora in range(17,19)

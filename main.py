@@ -1,3 +1,4 @@
+from classes.Cidade import Cidade
 from classes.Hora import Hora
 from parsers import parser
 from GestorFrota import GestorFrota
@@ -9,25 +10,25 @@ def main():
      ## parse de dados
 
      carros, pedidos = parser( "data/Carros.csv", "data/Pedidos.csv")
-
      tempo = Hora(6,0)
 
-     gestor_frota = GestorFrota(carros)
-     gestor_pedidos = GestorPedidos()
+     for algoritmo in range(1,5): # fazer simulação de todos os algoritmos?
+          Simulador(carros,pedidos,tempo,Cidade(),algoritmo).run()
+     
+     # gestor_frota = GestorFrota(carros)
+     # gestor_pedidos = GestorPedidos()
 
-     while True:##not simulador.terminou():
-          # Atualiza pedidos dinâmicos
-          gestor_pedidos.adicionaPedidos(pedidos)
+     # while True:##not simulador.terminou():
+     #      # Atualiza pedidos dinâmicos
+     #      gestor_pedidos.adicionaPedidos(pedidos)
           
-          # Executa lógica principal de alocação de veículos
-           ##simulador.executa_ciclo()
+     #      # Executa lógica principal de alocação de veículos
+     #       ##simulador.executa_ciclo()
 
-          # Avança o tempo
-          tempo = tempo.incrementaMinuto()       
+     #      # Avança o tempo
+     #      tempo = tempo.incrementaMinuto()       
 
-          break
-
-
+     #      break
      ## calcula métricas
      ## temos de guardar os tempos, consumos e assim .....
 
