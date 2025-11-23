@@ -1,4 +1,4 @@
-from .Tipo_Localizacao import Tipo_Localizacao
+from Tipo_Localizacao import Tipo_Localizacao
 
 class Localizacao:
      def __init__(self, nome, id, tipo: Tipo_Localizacao):
