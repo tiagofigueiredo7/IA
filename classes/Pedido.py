@@ -33,6 +33,14 @@ class Pedido:
      def getTempoEsperaMax(self):
           return self.tempoEsperaMax
 
+     # à passagem de um minuto, decrementa o tempo de espera max do pedido
+     def decTempoEsperaMax(self):
+          self.tempoEsperaMax = self.tempoEsperaMax -1
+          if self.tempoEsperaMax <= 0:
+               return False ### pedido n foi respondido a tempo 
+          return True
+          
+
      def __str__(self):
           origem = str(self.origem)
           destino = str(self.destino)
@@ -40,11 +48,17 @@ class Pedido:
      
      @staticmethod
      def parse_pedido(linha):
-          origem = Localizacao.parse_localizacao(linha[0:3])
-          destino = Localizacao.parse_localizacao(linha[3:6])
-          numPassageiros = int(linha[6])
-          prioridade = linha[7]
-          preferenciaAmbiental = linha[8].lower() == 'true'
-          tempoEsperaMax = (linha[9])
+          origem = linha[0]
+          #origem = Localizacao.parse_localizacao(linha[0:3])
+          destino = linha[1]
+          #destino = Localizacao.parse_localizacao(linha[3:6])
+          numPassageiros = int(linha[2])
+          #numPassageiros = int(linha[6])
+          #prioridade = linha[7]
+          prioridade = linha[3].lower() == 'alta'
+          #preferenciaAmbiental = linha[8].lower() == 'true'
+          preferenciaAmbiental = linha[4].lower() == 'true'
+          #tempoEsperaMax = int(linha[9])
+          tempoEsperaMax = int(linha[5])
 
           return Pedido(origem, destino, numPassageiros, prioridade, preferenciaAmbiental, tempoEsperaMax)

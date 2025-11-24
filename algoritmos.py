@@ -1,4 +1,4 @@
-from classes import Cidade
+from classes.Cidade import Cidade
 
 # Algoritmo de Procura em Profundidade (DFS)
 def DFS(cidade: Cidade, inicio, fim, path, visited):
@@ -7,24 +7,25 @@ def DFS(cidade: Cidade, inicio, fim, path, visited):
         path.append(inicio)
         return path
     
-    for local,_ in cidade.vizinhos[inicio]:
-        if local not in visited and cidade.procura_DFS(local, fim, path, visited):
+    for local,_ in cidade.get_vizinhos(inicio):
+        if local not in visited and DFS(cidade, local, fim, path, visited):
             path.insert(0, inicio)
             return path
     return None
 
 
 # Algoritmo de Procura em Largura (BFS)
-def BFS(cidade, inicio, fim):
+def BFS(cidade: Cidade, inicio, fim):
     if inicio == fim:
         return [inicio]
     
-    visitados = set(inicio)
+    visitados = set()
+    visitados.add(inicio)
     queue = [inicio]
     parents = {}
 
     for n in queue:
-        for local,_ in cidade.vizinhos[n]:
+        for local,_ in cidade.get_vizinhos(n):
             if local not in visitados:
                 visitados.add(local)
                 parents[local] = n
@@ -36,11 +37,12 @@ def BFS(cidade, inicio, fim):
                     return path
                 elif local not in queue:
                     queue.append(local)
+    print("não encontrei!!!")
     return None
 
 
 # Algoritmo de Procura A*
-def aStar(cidade, start, end): 
+def aStar(cidade: Cidade, start, end): 
     queue = set()
     queue.add(start)
     visited = set()
@@ -85,7 +87,7 @@ def aStar(cidade, start, end):
 
 
 # Algoritmo de Procura Gulosa (Greedy)
-def greedy(cidade, start, end): 
+def greedy(cidade: Cidade, start, end): 
     queue = set()
     queue.add(start)
     visited = set()

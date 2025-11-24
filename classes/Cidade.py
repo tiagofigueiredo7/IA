@@ -1,8 +1,7 @@
-from Localizacao import Localizacao
-from Tipo_Localizacao import Tipo_Localizacao as tl
-
 import networkx as nx 
-import matplotlib.pyplot as plt 
+import matplotlib.pyplot as plt
+from classes.Tipo_Localizacao import Tipo_Localizacao as tl
+from classes.Localizacao import Localizacao 
 
 
 class Cidade:
@@ -58,10 +57,16 @@ class Cidade:
         self.adicionar_caminho("Vila Frescainha", "Intermarche", 3)
         self.adicionar_caminho("Arcozelo", "Campo da Feira", 3)
 
+    # Devolve lista dos locais da cidade
+    def getLocais(self):
+        lista = []
+        for l in self.locais:
+            lista.append(l.getName())
+        return lista
 
     # adiciona ponto à cidade
     def adicionar_ponto(self, nome, tipo): # id determinado pela cidade
-        id = len(self.locais)
+        id = len(self.locais) + 1
         p = Localizacao(nome,id,tipo)
         self.locais.append(p)
         self.vizinhos[nome] = []
@@ -70,13 +75,6 @@ class Cidade:
     def adicionar_caminho(self, ponto1, ponto2, distancia):
         self.vizinhos[ponto1].append((ponto2, distancia)) 
         self.vizinhos[ponto2].append((ponto1, distancia))
-    
-    # procura um local na cidade pelo nome
-    def get_local(self, local):
-        for l in self.locais:
-            if l.getName() == local:
-                return l
-        return None
     
     # devolve lista de vizinhos de um local e a sua distância
     def get_vizinhos(self, local):
@@ -92,13 +90,15 @@ class Cidade:
                 return d
         return None
 
-    # calcula a distância de um caminho
-    def calcular_distancia(self, caminho): # caminho é uma lista de nodos
+    # calcula a distância e tempo esperado de um caminho
+    def calcular_distancia_tempo(self, caminho): # caminho é uma lista de nodos
         d = 0
+        t = 0
         for i in range(0,len(caminho)-1):
             d = d + self.get_distancia(caminho[i], caminho[i + 1])
-        return d
-
+            t = t + self.get_distancia(caminho[i], caminho[i + 1]) + self.get_transito(caminho[i])
+        return d, t
+    
     # desenha a cidade
     def desenhar_cidade(self):
         g = nx.Graph()
@@ -119,12 +119,8 @@ class Cidade:
     # depois ver como fazer para ter trânsito dinâmico #
     ####################################################
     def adicionarTransito(self, local, estima):
-        pass
+        self.transito[local] = estima
     def get_transito(self, local):
-        pass
-
-
-
-if __name__ == "__main__":
-    c = Cidade()
-    c.desenhar_cidade() # para ver como fica a cidade
+        if local not in self.transito:
+            self.transito[local] = len(self.vizinhos[local]) ### transito em função do nr de vizinhos?
+        return self.transito[local]
