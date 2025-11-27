@@ -14,6 +14,19 @@ def DFS(cidade: Cidade, inicio, fim, path, visited):
     return None
 
 
+def DFS_tipo(cidade: Cidade, inicio, tipo, path, visited):
+    visited.add(inicio)    
+    if cidade.get_local(inicio).getTipo() == tipo:
+        path.append(inicio)
+        return path
+    
+    for local,_ in cidade.get_vizinhos(inicio):
+        if local not in visited and DFS_tipo(cidade, local, tipo, path, visited):
+            path.insert(0, inicio)
+            return path
+    
+    return None
+
 # Algoritmo de Procura em Largura (BFS)
 def BFS(cidade: Cidade, inicio, fim):
     if inicio == fim:
@@ -37,7 +50,31 @@ def BFS(cidade: Cidade, inicio, fim):
                     return path
                 elif local not in queue:
                     queue.append(local)
-    print("não encontrei!!!")
+    return None
+
+
+def BFS_tipo(cidade: Cidade, inicio, tipo):
+    if cidade.get_local(inicio).getTipo() == tipo:
+        return [inicio]
+    
+    visitados = set()
+    visitados.add(inicio)
+    queue = [inicio]
+    parents = {}
+
+    for n in queue:
+        for local,_ in cidade.get_vizinhos(n):
+            if local not in visitados:
+                visitados.add(local)
+                parents[local] = n
+                if cidade.get_local(local).getTipo() == tipo:
+                    path = [local]
+                    while local != inicio:
+                        local = parents[local]
+                        path.insert(0,local)
+                    return path
+                elif local not in queue:
+                    queue.append(local)
     return None
 
 
@@ -86,6 +123,50 @@ def aStar(cidade: Cidade, start, end):
     return None
 
 
+def aStar_tipo(cidade: Cidade, start, tipo, autonomia):
+    queue = set()
+    queue.add(start)
+    visited = set()
+    cost = {start : 0}
+    parents = {start: start}
+
+    while len(queue) > 0:
+        n = None
+
+        for q in queue:
+            if n is None or cost[q] + cidade.get_transito(q) < cost[n] + cidade.get_transito(n):
+                n = q
+
+        if cidade.get_local(n).getTipo() == tipo and cost[n] <= autonomia:
+            path = []
+            curr = n
+            while parents[curr] != curr:
+                path.append(curr)
+                curr = parents[curr]
+            path.append(start)
+            path.reverse()
+            return path
+
+        queue.remove(n)
+        visited.add(n)
+
+        for v, d in cidade.get_vizinhos(n):
+            if v not in queue and v not in visited:
+                queue.add(v)
+                parents[v] = n
+                cost[v] = cost[n] + d
+
+            elif cost[v] > cost[n] + d:
+                parents[v] = n
+                cost[v] = cost[n] + d
+
+                if v in visited:
+                    visited.remove(v)
+                    queue.add(v)
+
+    return None
+
+
 # Algoritmo de Procura Gulosa (Greedy)
 def greedy(cidade: Cidade, start, end): 
     queue = set()
@@ -121,4 +202,35 @@ def greedy(cidade: Cidade, start, end):
     return None
 
 
-## adicionar mais?
+def greedy_tipo(cidade: Cidade, start, tipo):
+    queue = set()
+    queue.add(start)
+    visited = set()
+    parents = {start: start}
+
+    while len(queue) > 0:
+        n = None
+
+        for q in queue:
+            if n is None or cidade.get_transito(q) < cidade.get_transito(n):
+                n = q
+
+        if cidade.get_local(n).getTipo() == tipo:
+            path = []
+            curr = n
+            while parents[curr] != curr:
+                path.append(curr)
+                curr = parents[curr]
+            path.append(start)
+            path.reverse()
+            return path
+
+        queue.remove(n)
+        visited.add(n)
+
+        for v, _ in cidade.get_vizinhos(n):
+            if v not in queue and v not in visited:
+                queue.add(v)
+                parents[v] = n
+
+    return None
