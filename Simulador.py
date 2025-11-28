@@ -19,7 +19,7 @@ class Simulador:
 
           ## estatísticas
           self.pedidos_respondidos = 0
-          self.pedidos_rejeitados = 0
+          self.pedidos_rejeitados = [0,0,0]
           self.tempo_resposta_total = 0
           self.emissoes = 0
           self.custos = 0
@@ -31,9 +31,13 @@ class Simulador:
           self.cap_error = 0
 
 
-     # Adiciona entre 0 a 2 pedidos ao sistema
+     # Adiciona entre pedidos ao sistema
      def adicionaPedidos(self):
-          num_pedidos = random.randint(0,2)
+          if self.tempo.eHoraPonta():
+               num_pedidos = random.randint(1,5)
+          else:
+               num_pedidos = random.randint(0,1) ## horas mais mortas
+
           while len(self.pedidos_por_adicionar) > 0 and num_pedidos > 0:
                num_pedidos = num_pedidos - 1
                novo_pedido = self.pedidos_por_adicionar.pop()
@@ -45,21 +49,23 @@ class Simulador:
 
      # Imprime as estatísticas no final da simulação
      def calcular_estatisticas(self):
-          print(f"Taxa de sucesso = {round((self.pedidos_respondidos*100)/(self.pedidos_respondidos+self.pedidos_rejeitados),1)}%")
+          print(f"Taxa de sucesso = {round((self.pedidos_respondidos*100)/(self.pedidos_respondidos+self.pedidos_rejeitados[0]),1)}%")
           print(f"Nº de pedidos cumpridos = {self.pedidos_respondidos}")
           if self.pedidos_respondidos > 0:
                print(f"Tempo médio de resposta = {round((self.tempo_resposta_total/self.pedidos_respondidos),2)} minutos")
-          print(f"Nº de pedidos rejeitados = {self.pedidos_rejeitados}")
+          print(f"Nº de pedidos rejeitados = {self.pedidos_rejeitados[0]}")
+          print(f"   (Prioritários: {round((self.pedidos_rejeitados[1]*100)/self.pedidos_rejeitados[0],2)}%)")
+          print(f"   (Com preferência ambiental: {round((self.pedidos_rejeitados[2]*100)/self.pedidos_rejeitados[0],2)}%)")
           print(f"Custos operacionais = {self.custos}€")
           print(f"Emissões de CO2 = {self.emissoes}g")
           print(f"Distância percorrida sem passageiros = {self.km_sem_passageiros}km")
 
           total_errors = self.type_error + self.time_error + self.distance_error + self.cap_error
-          print("\nCausas dos pedidos recusados:\n")
-          print(f"\tTempo de espera: {round((self.time_error*100)/total_errors,1)}%")
-          print(f"\tPreferência ambiental: {round((self.type_error*100)/total_errors,1)}%")
-          print(f"\tCapacidade para nº de passageiros: {round((self.cap_error*100)/total_errors,1)}%")
-          print(f"\tDistância elevada: {round((self.distance_error*100)/total_errors,1)}%")
+          print("\nCausas de recusa de pedidos")
+          print(f"   Tempo de espera reduzido: {round((self.time_error*100)/total_errors,1)}%")
+          print(f"   Não cumpre preferência ambiental: {round((self.type_error*100)/total_errors,1)}%")
+          print(f"   Capacidade inferior ao nº de passageiros: {round((self.cap_error*100)/total_errors,1)}%")
+          print(f"   Autonomia insuficiente: {round((self.distance_error*100)/total_errors,1)}%")
 
 
      # Algoritmo usado na simulação calcula o caminho entre dois pontos
@@ -100,58 +106,70 @@ class Simulador:
 
           return None,None,None,None
 
-     #### QUE VERSÃO USAR???
-     # Responde ao pedido, se possível (Versão que envia o carro mais rápido possível)
-     def responde_pedido_urgente(self, pedido: Pedido):
-          veiculo_escolhido = None
-          melhor_resposta = None
 
-          for ve in self.veiculos.values():
-               d1,t1,d2,t2 = self.capaz_de_responder(ve,pedido)
-               if t1 and (melhor_resposta == None or melhor_resposta[1] > t1):
-                    melhor_resposta = (d1,t1,d2,t2)
-                    veiculo_escolhido = ve
+     # Envia carro escolhido para cumprir pedido
+     def envia_carro(self, c: Carro, d1, t1, d2, t2, l):
+          d = d1 + d2
+          c.setAutonomiaAtual(c.getAutonomiaAtual() - d)
+          c.setTempoAteDisponivel(t1 + t2)
+          c.setLocalizacao(l)
 
-          if veiculo_escolhido == None:
-               self.pedidos_rejeitados += 1
+          self.pedidos_respondidos += 1
+          self.tempo_resposta_total += t1
+          self.emissoes += (c.getImpactoAmbiental() * d)
+          self.custos += (c.getCustoKM() * d)
+          self.km_sem_passageiros += d1
 
-          else:
-               d = melhor_resposta[0] + melhor_resposta[2]
-               veiculo_escolhido.setAutonomiaAtual(veiculo_escolhido.getAutonomiaAtual() - d)
-               veiculo_escolhido.setTempoAteDisponivel(melhor_resposta[1] + melhor_resposta[3])
-               veiculo_escolhido.setLocalizacao(pedido.getDestino())
-
-               self.pedidos_respondidos += 1
-               self.tempo_resposta_total += melhor_resposta[1]
-               self.emissoes += (veiculo_escolhido.getImpactoAmbiental() * d)
-               self.custos += (veiculo_escolhido.getCustoKM() * d)
-               self.km_sem_passageiros += melhor_resposta[0]
-
-               if veiculo_escolhido.getAutonomiaAtual() < 50:
-                    self.abastecer(veiculo_escolhido)
+          if c.getAutonomiaAtual() < 50:
+               self.abastecer(c)
 
 
-     # Responde ao pedido, se possível (Versão que envia o primeiro carro disponível)
+     # Procura um carro para responder ao pedido, se possível
      def responde_pedido(self, pedido: Pedido):
+          veiculo_escolhido = None
+          r = None
+          ### modo básico
           for ve in self.veiculos.values():
                d1,t1,d2,t2 = self.capaz_de_responder(ve,pedido)
                if t1:
-                    d = d1 + d2
-                    ve.setAutonomiaAtual(ve.getAutonomiaAtual() - d)
-                    ve.setTempoAteDisponivel(t1 + t2)
-                    ve.setLocalizacao(pedido.getDestino())
+                    veiculo_escolhido = ve 
+                    r = (d1,t1,d2,t2)
+                    break
 
-                    self.pedidos_respondidos += 1
-                    self.tempo_resposta_total += t1
-                    self.emissoes += (ve.getImpactoAmbiental() * d)
-                    self.custos += (ve.getCustoKM() * d)
-                    self.km_sem_passageiros += d1
+          ### modo rápido
+          #      for ve in self.veiculos.values():
+          #           d1,t1,d2,t2 = self.capaz_de_responder(ve,pedido)
+          #           if t1 and (r == None or r[1] > t1):
+          #                r = (d1,t1,d2,t2)
+          #                veiculo_escolhido = ve
 
-                    if ve.getAutonomiaAtual() < 50:
-                         self.abastecer(ve)
-                    return 
-          
-          self.pedidos_rejeitados += 1
+          ### modo económico
+          #      d = 0
+          #      for ve in self.veiculos.values():
+          #           d1,t1,d2,t2 = self.capaz_de_responder(ve,pedido)
+          #           if t1 and (r == None or d > ve.getCustoKM()*(d1+d2)):
+          #                d = ve.getCustoKM()*(d1+d2)
+          #                r = (d1,t1,d2,t2)
+          #                veiculo_escolhido = ve
+               
+          ### modo ambiental
+          #      e = 0
+          #      for ve in self.veiculos.values():
+          #           d1,t1,d2,t2 = self.capaz_de_responder(ve,pedido)
+          #           if t1 and (r == None or e > ve.getImpactoAmbiental()*(d1+d2)):
+          #                e = ve.getImpactoAmbiental()*(d1+d2)
+          #                r = (d1,t1,d2,t2)
+          #                veiculo_escolhido = ve
+
+          if veiculo_escolhido:
+               self.envia_carro(veiculo_escolhido,r[0],r[1],r[2],r[3],pedido.getDestino())
+
+          else:
+               self.pedidos_rejeitados[0] += 1
+               if pedido.getPrioridade():
+                    self.pedidos_rejeitados[1] += 1
+               if pedido.getPreferenciaAmbiental():
+                    self.pedidos_rejeitados[2] += 1
           
 
      # Procura ponto de abastecimento/estação de carregamento para carro reabastecer
@@ -170,7 +188,7 @@ class Simulador:
           if path:
                d,t = self.cidade.calcular_distancia_tempo(path)
                if d > carro.getAutonomiaAtual():
-                    print(f"Não foram encontrados postos de abastecimento a uma distância alcançável. Carro {carro.getID()} desativado.")
+                    print(f"Não foram encontrados postos de abastecimento a uma distância alcançável. Carro {carro.getID()} desativado.\n")
                     self.veiculos.pop(carro.getID()) # carro passa a ser inútil
                else:
                     carro.reabastecer()
@@ -181,7 +199,7 @@ class Simulador:
                     self.km_sem_passageiros += d
 
           else: # em principio, é impossivel de acontecer
-               print(f"Não foram encontrados postos de abastecimento. Carro {carro.getID()} desativado.")
+               print(f"Não foram encontrados postos de abastecimento. Carro {carro.getID()} desativado.\n")
                self.veiculos.pop(carro.getID())
 
 
@@ -209,7 +227,11 @@ class Simulador:
                for p in f:
                     if not p.decTempoEsperaMax():
                          f.pop(index)
-                         self.pedidos_rejeitados += 1
+                         self.pedidos_rejeitados[0] += 1
+                         if p.getPrioridade():
+                              self.pedidos_rejeitados[1] += 1
+                         if p.getPreferenciaAmbiental():
+                              self.pedidos_rejeitados[2] += 1
                          print("Pedido não foi respondido a tempo.")
                     index+=1
 

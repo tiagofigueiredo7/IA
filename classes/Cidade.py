@@ -97,6 +97,14 @@ class Cidade:
         for l in self.locais:
             lista.append(l.getName())
         return lista
+    
+    def getPontosColeta(self):
+        lista = []
+        for l in self.locais:
+            if l.getTipo() == tl.Ponto_Coleta:
+                lista.append(l.getName())
+        return lista
+
 
     # adiciona ponto à cidade
     def adicionar_ponto(self, nome, tipo): # id determinado pela cidade

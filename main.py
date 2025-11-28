@@ -10,16 +10,8 @@ import random
 
 def gerar_frota(nr_eletricos, nr_combustao, locais):
      carros = {}
-     for i in range(nr_combustao): # valores ajustados para o tipo
-          autonomia = random.randint(500,800)
-          cap = random.randint(1,7)
-          custo = random.randint(3,5)
-          impacto = random.randint(5,15)
-          localizacao = locais[random.randint(0,len(locais)-1)]
-          reabastecimento = random.randint(1,2)
-          carros[i] = Carro(i,"Combustão",autonomia,cap,custo,impacto,localizacao,reabastecimento)
-     
-     for i in range(nr_combustao, nr_combustao+nr_eletricos):
+
+     for i in range(nr_eletricos):
           autonomia = random.randint(300,500)
           cap = random.randint(1,7)
           custo = random.randint(1,2)
@@ -28,6 +20,15 @@ def gerar_frota(nr_eletricos, nr_combustao, locais):
           reabastecimento = random.randint(5,8)
           carros[i] = Carro(i,"Elétrico",autonomia,cap,custo,impacto,localizacao,reabastecimento)
      
+     for i in range(nr_eletricos, nr_combustao+nr_eletricos): # valores ajustados para o tipo
+          autonomia = random.randint(500,800)
+          cap = random.randint(1,7)
+          custo = random.randint(3,5)
+          impacto = random.randint(5,15)
+          localizacao = locais[random.randint(0,len(locais)-1)]
+          reabastecimento = random.randint(1,2)
+          carros[i] = Carro(i,"Combustão",autonomia,cap,custo,impacto,localizacao,reabastecimento)
+          
      return carros
 
 
@@ -54,12 +55,12 @@ def gerar_pedidos(nr_pedidos,locais):
 def main():
      # podiamos gerar info aleatoria em vez de ler de um csv
      cidade = Cidade()
-     carros = gerar_frota(15,25, cidade.getLocais()) # dps pedir como arg?
-     pedidos = gerar_pedidos(1000,cidade.getLocais()) # 1000 chega e sobra habitualmente
+     carros = gerar_frota(20,30, cidade.getLocais()) # dps pedir como arg?
+     pedidos = gerar_pedidos(1000,cidade.getPontosColeta()) # 1000 chega e sobra habitualmente
      #carros, pedidos = parser( "data/Carros.csv", "data/Pedidos.csv")
      
-     for algoritmo in range(1,5):
-          Simulador(carros.copy(),pedidos.copy(),Hora(6,0),cidade,algoritmo).run()
+     for algoritmo in range(4):
+          Simulador(carros.copy(),pedidos.copy(),Hora(6,0),cidade,algoritmo+1).run()
           time.sleep(60) ### o meu PC começa a crashar nas últimas simulações..
           # sem este sleep pelo meio, as ultimas simulações começam a ter desempenhos terriveis
 
