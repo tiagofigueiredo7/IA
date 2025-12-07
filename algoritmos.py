@@ -1,8 +1,9 @@
+import time
 from classes.Cidade import Cidade
 from classes.Hora import Hora
 
 # Algoritmo de Procura em Profundidade (DFS)
-def DFS(cidade: Cidade, inicio, fim, path, visited):
+def DFS(cidade: Cidade, inicio, fim, path:list, visited:set):
     visited.add(inicio)
     if inicio == fim:
         path.append(inicio)
@@ -11,8 +12,11 @@ def DFS(cidade: Cidade, inicio, fim, path, visited):
     for local,_ in cidade.get_vizinhos(inicio):
         if local not in visited and DFS(cidade, local, fim, path, visited):
             path.insert(0, inicio)
+            copia = path.copy()
+            copia.reverse()
+            cidade.add_to_cache(fim,inicio,copia)
             cidade.add_to_cache(inicio,fim,path)
-            return path
+            return path 
     return None
 
 
@@ -49,6 +53,9 @@ def BFS(cidade: Cidade, inicio, fim):
                     while local != inicio:
                         local = parents[local]
                         path.insert(0,local)
+                    copia = path.copy()
+                    copia.reverse()
+                    cidade.add_to_cache(fim,inicio,copia)
                     cidade.add_to_cache(inicio,fim,path)
                     return path
                 elif local not in queue:
@@ -120,6 +127,7 @@ def aStar(cidade: Cidade, inicio, fim, h: Hora):
             n = parents[n]
 
         path.append(inicio)
+        cidade.add_to_cache(fim,inicio,path.copy())
         path.reverse()
         cidade.add_to_cache(inicio,fim,path)
         return path
@@ -199,6 +207,7 @@ def greedy(cidade: Cidade, inicio, fim, h: Hora):
             n = parents[n]
 
         path.append(inicio)
+        cidade.add_to_cache(fim,inicio,path.copy())
         path.reverse()
         cidade.add_to_cache(inicio,fim,path)
         return path

@@ -142,7 +142,7 @@ class Cidade:
         return None
 
     # Calcula a distância e tempo esperado de um caminho
-    def calcular_distancia_tempo(self, caminho, h: Hora): # caminho é uma lista de nodos
+    def calcular_distancia_tempo(self, caminho: list, h: Hora): # caminho é uma lista de nodos
         d = 0
         t = 0
         for i in range(len(caminho)-1):
@@ -180,5 +180,5 @@ class Cidade:
         return self.transito[local]
     
     # Adiciona caminho à cache para não ter de ser recalculado
-    def add_to_cache(self, inicio, fim, path):
-        self.cache[inicio][fim] = path
+    def add_to_cache(self, inicio, fim, path:list):
+        (self.cache[inicio])[fim] = path

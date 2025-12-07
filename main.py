@@ -53,14 +53,14 @@ def gerar_pedidos(nr_pedidos,locais):
 
 
 def main():
-     # podiamos gerar info aleatoria em vez de ler de um csv
      cidade = Cidade()
-     carros = gerar_frota(20,30, cidade.getLocais()) # dps pedir como arg?
-     pedidos = gerar_pedidos(1000,cidade.getPontosColeta()) # 1000 chega e sobra habitualmente
+     carros = gerar_frota(20,30, cidade.getLocais())
+     pedidos = gerar_pedidos(1000,cidade.getPontosColeta())
      #carros, pedidos = parser( "data/Carros.csv", "data/Pedidos.csv")
      
      for algoritmo in range(4):
-          Simulador(carros.copy(),pedidos.copy(),Hora(6,0),Cidade(),algoritmo+1).run()
+          Simulador(carros.copy(),pedidos.copy(),Hora(6,0),cidade,algoritmo+1).run()
+          cidade = Cidade()
 
 if __name__ == "__main__":
     main()

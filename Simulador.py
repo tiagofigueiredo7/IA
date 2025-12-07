@@ -70,17 +70,18 @@ class Simulador:
      # Algoritmo usado na simulação calcula o caminho entre dois pontos
      def usar_algoritmo(self, o, d):
           # primeiro verifica a cache
-          if d in self.cidade.cache[o].keys():
-               return self.cidade.cache[o][d]
-          match self.algoritmo:
-               case 1:
-                    return BFS(self.cidade,o,d)
-               case 2:
-                    return DFS(self.cidade,o,d,[],set())
-               case 3:
-                    return aStar(self.cidade,o,d,self.tempo)
-               case _:
-                    return greedy(self.cidade,o,d,self.tempo)
+          if d not in self.cidade.cache[o].keys():
+               match self.algoritmo:
+                    case 1:
+                         return BFS(self.cidade,o,d)
+                    case 2:
+                         return DFS(self.cidade,o,d,[],set())
+                    case 3:
+                         return aStar(self.cidade,o,d,self.tempo)
+                    case _:
+                         return greedy(self.cidade,o,d,self.tempo)
+          else:
+               return (self.cidade.cache[o]).get(d)
 
 
      # Verifica se o carro tem as condições necessárias para responder ao pedido
