@@ -60,9 +60,7 @@ def main():
      #carros, pedidos = parser( "data/Carros.csv", "data/Pedidos.csv")
      
      for algoritmo in range(4):
-          Simulador(carros.copy(),pedidos.copy(),Hora(6,0),cidade,algoritmo+1).run()
-          time.sleep(60) ### o meu PC começa a crashar nas últimas simulações..
-          # sem este sleep pelo meio, as ultimas simulações começam a ter desempenhos terriveis
+          Simulador(carros.copy(),pedidos.copy(),Hora(6,0),Cidade(),algoritmo+1).run()
 
 if __name__ == "__main__":
     main()

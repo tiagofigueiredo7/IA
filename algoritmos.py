@@ -1,4 +1,5 @@
 from classes.Cidade import Cidade
+from classes.Hora import Hora
 
 # Algoritmo de Procura em Profundidade (DFS)
 def DFS(cidade: Cidade, inicio, fim, path, visited):
@@ -10,6 +11,7 @@ def DFS(cidade: Cidade, inicio, fim, path, visited):
     for local,_ in cidade.get_vizinhos(inicio):
         if local not in visited and DFS(cidade, local, fim, path, visited):
             path.insert(0, inicio)
+            cidade.add_to_cache(inicio,fim,path)
             return path
     return None
 
@@ -47,6 +49,7 @@ def BFS(cidade: Cidade, inicio, fim):
                     while local != inicio:
                         local = parents[local]
                         path.insert(0,local)
+                    cidade.add_to_cache(inicio,fim,path)
                     return path
                 elif local not in queue:
                     queue.append(local)
@@ -77,19 +80,18 @@ def BFS_tipo(cidade: Cidade, inicio, tipo):
                     queue.append(local)
     return None
 
-
 # Algoritmo de Procura A*
-def aStar(cidade: Cidade, start, end): 
+def aStar(cidade: Cidade, inicio, fim, h: Hora): 
     queue = set()
-    queue.add(start)
+    queue.add(inicio)
     visited = set()
-    cost = {start : 0}
-    parents={start: start}
+    cost = {inicio : 0}
+    parents={inicio: inicio}
 
     while len(queue) > 0:
         n = None
         for q in queue:
-            if n == None or cost[q] + cidade.get_transito(q) < cost[n] + cidade.get_transito(n):
+            if n == None or cost[q] + cidade.get_transito(q,h) < cost[n] + cidade.get_transito(n,h):
                 n = q 
         
         queue.remove(n)
@@ -109,32 +111,33 @@ def aStar(cidade: Cidade, start, end):
                     visited.remove(v)
                     queue.add(v)
 
-    if parents.get(end) is not None:
+    if parents.get(fim) is not None:
         path = []
-        n = end
+        n = fim
 
         while parents[n] != n:
             path.append(n)
             n = parents[n]
 
-        path.append(start)
+        path.append(inicio)
         path.reverse()
+        cidade.add_to_cache(inicio,fim,path)
         return path
     return None
 
 
-def aStar_tipo(cidade: Cidade, start, tipo, autonomia):
+def aStar_tipo(cidade: Cidade, inicio, tipo, autonomia, h: Hora):
     queue = set()
-    queue.add(start)
+    queue.add(inicio)
     visited = set()
-    cost = {start : 0}
-    parents = {start: start}
+    cost = {inicio : 0}
+    parents = {inicio: inicio}
 
     while len(queue) > 0:
         n = None
 
         for q in queue:
-            if n is None or cost[q] + cidade.get_transito(q) < cost[n] + cidade.get_transito(n):
+            if n is None or cost[q] + cidade.get_transito(q,h) < cost[n] + cidade.get_transito(n,h):
                 n = q
 
         if cidade.get_local(n).getTipo() == tipo and cost[n] <= autonomia:
@@ -143,7 +146,7 @@ def aStar_tipo(cidade: Cidade, start, tipo, autonomia):
             while parents[curr] != curr:
                 path.append(curr)
                 curr = parents[curr]
-            path.append(start)
+            path.append(inicio)
             path.reverse()
             return path
 
@@ -166,18 +169,17 @@ def aStar_tipo(cidade: Cidade, start, tipo, autonomia):
 
     return None
 
-
 # Algoritmo de Procura Gulosa (Greedy)
-def greedy(cidade: Cidade, start, end): 
+def greedy(cidade: Cidade, inicio, fim, h: Hora): 
     queue = set()
-    queue.add(start)
+    queue.add(inicio)
     visited = set()
-    parents={start: start}
+    parents={inicio: inicio}
 
     while len(queue) > 0:
         n = None
         for q in queue:
-            if n == None or cidade.get_transito(q) < cidade.get_transito(n):
+            if n == None or cidade.get_transito(q,h) < cidade.get_transito(n,h):
                 n = q 
         
         queue.remove(n)
@@ -188,31 +190,32 @@ def greedy(cidade: Cidade, start, end):
                 queue.add(v)
                 parents[v] = n
 
-    if parents.get(end) is not None:
+    if parents.get(fim) is not None:
         path = []
-        n = end
+        n = fim
 
         while parents[n] != n:
             path.append(n)
             n = parents[n]
 
-        path.append(start)
+        path.append(inicio)
         path.reverse()
+        cidade.add_to_cache(inicio,fim,path)
         return path
     return None
 
 
-def greedy_tipo(cidade: Cidade, start, tipo):
+def greedy_tipo(cidade: Cidade, inicio, tipo, h: Hora):
     queue = set()
-    queue.add(start)
+    queue.add(inicio)
     visited = set()
-    parents = {start: start}
+    parents = {inicio: inicio}
 
     while len(queue) > 0:
         n = None
 
         for q in queue:
-            if n is None or cidade.get_transito(q) < cidade.get_transito(n):
+            if n is None or cidade.get_transito(q,h) < cidade.get_transito(n,h):
                 n = q
 
         if cidade.get_local(n).getTipo() == tipo:
@@ -221,7 +224,7 @@ def greedy_tipo(cidade: Cidade, start, tipo):
             while parents[curr] != curr:
                 path.append(curr)
                 curr = parents[curr]
-            path.append(start)
+            path.append(inicio)
             path.reverse()
             return path
 

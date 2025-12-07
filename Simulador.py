@@ -24,7 +24,6 @@ class Simulador:
           self.emissoes = 0
           self.custos = 0
           self.km_sem_passageiros = 0
-          ### como fazer taxa de ocupação da frota??
           self.type_error = 0
           self.time_error = 0
           self.distance_error = 0
@@ -49,13 +48,13 @@ class Simulador:
 
      # Imprime as estatísticas no final da simulação
      def calcular_estatisticas(self):
-          print(f"Taxa de sucesso = {round((self.pedidos_respondidos*100)/(self.pedidos_respondidos+self.pedidos_rejeitados[0]),1)}%")
+          print(f"Taxa de sucesso = {round((self.pedidos_respondidos/10),1)}%")
           print(f"Nº de pedidos cumpridos = {self.pedidos_respondidos}")
           if self.pedidos_respondidos > 0:
                print(f"Tempo médio de resposta = {round((self.tempo_resposta_total/self.pedidos_respondidos),2)} minutos")
           print(f"Nº de pedidos rejeitados = {self.pedidos_rejeitados[0]}")
-          print(f"   (Prioritários: {round((self.pedidos_rejeitados[1]*100)/self.pedidos_rejeitados[0],2)}%)")
-          print(f"   (Com preferência ambiental: {round((self.pedidos_rejeitados[2]*100)/self.pedidos_rejeitados[0],2)}%)")
+          print(f"({round((self.pedidos_rejeitados[1]*100)/self.pedidos_rejeitados[0],2)}% prioritários)")
+          print(f"({round((self.pedidos_rejeitados[2]*100)/self.pedidos_rejeitados[0],2)}% em hora de ponta)")
           print(f"Custos operacionais = {self.custos}€")
           print(f"Emissões de CO2 = {self.emissoes}g")
           print(f"Distância percorrida sem passageiros = {self.km_sem_passageiros}km")
@@ -70,15 +69,18 @@ class Simulador:
 
      # Algoritmo usado na simulação calcula o caminho entre dois pontos
      def usar_algoritmo(self, o, d):
+          # primeiro verifica a cache
+          if d in self.cidade.cache[o].keys():
+               return self.cidade.cache[o][d]
           match self.algoritmo:
                case 1:
                     return BFS(self.cidade,o,d)
                case 2:
                     return DFS(self.cidade,o,d,[],set())
                case 3:
-                    return aStar(self.cidade,o,d)
+                    return aStar(self.cidade,o,d,self.tempo)
                case _:
-                    return greedy(self.cidade,o,d)
+                    return greedy(self.cidade,o,d,self.tempo)
 
 
      # Verifica se o carro tem as condições necessárias para responder ao pedido
@@ -89,10 +91,10 @@ class Simulador:
           if tipo_valido:
                if pedido.getNumPassageiros() <= carro.getCapacidadePassageiros():
                     path1 = self.usar_algoritmo(carro.getLocalizacao(),pedido.getOrigem())
-                    d1, t1 = self.cidade.calcular_distancia_tempo(path1)
+                    d1, t1 = self.cidade.calcular_distancia_tempo(path1,self.tempo)
                     if carro.getTempoAteDisponivel() + t1 <= pedido.getTempoEsperaMax():
                          path2 = self.usar_algoritmo(pedido.getOrigem(),pedido.getDestino())
-                         d2,t2 = self.cidade.calcular_distancia_tempo(path2)
+                         d2,t2 = self.cidade.calcular_distancia_tempo(path2,self.tempo)
                          if d1+d2+20 <= carro.getAutonomiaAtual(): # evitar que carro fique "na reserva"
                               return d1,t1,d2,t2
                          else:
@@ -168,7 +170,7 @@ class Simulador:
                self.pedidos_rejeitados[0] += 1
                if pedido.getPrioridade():
                     self.pedidos_rejeitados[1] += 1
-               if pedido.getPreferenciaAmbiental():
+               if self.tempo.eHoraPonta():
                     self.pedidos_rejeitados[2] += 1
           
 
@@ -181,12 +183,12 @@ class Simulador:
                case 2:
                     path = DFS_tipo(self.cidade,carro.getLocalizacao(),tipo,[],set())
                case 3:
-                    path = aStar_tipo(self.cidade,carro.getLocalizacao(),tipo, carro.getAutonomiaAtual())
+                    path = aStar_tipo(self.cidade,carro.getLocalizacao(),tipo, carro.getAutonomiaAtual(),self.tempo)
                case _:
-                    path = greedy_tipo(self.cidade,carro.getLocalizacao(),tipo)
+                    path = greedy_tipo(self.cidade,carro.getLocalizacao(),tipo,self.tempo)
 
           if path:
-               d,t = self.cidade.calcular_distancia_tempo(path)
+               d,t = self.cidade.calcular_distancia_tempo(path,self.tempo)
                if d > carro.getAutonomiaAtual():
                     print(f"Não foram encontrados postos de abastecimento a uma distância alcançável. Carro {carro.getID()} desativado.\n")
                     self.veiculos.pop(carro.getID()) # carro passa a ser inútil
@@ -230,7 +232,7 @@ class Simulador:
                          self.pedidos_rejeitados[0] += 1
                          if p.getPrioridade():
                               self.pedidos_rejeitados[1] += 1
-                         if p.getPreferenciaAmbiental():
+                         if self.tempo.eHoraPonta():
                               self.pedidos_rejeitados[2] += 1
                          print("Pedido não foi respondido a tempo.")
                     index+=1
