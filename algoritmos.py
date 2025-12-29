@@ -29,6 +29,7 @@ def DFS_tipo(cidade: Cidade, inicio, tipo, path, visited):
     for local,_ in cidade.get_vizinhos(inicio):
         if local not in visited and DFS_tipo(cidade, local, tipo, path, visited):
             path.insert(0, inicio)
+            cidade.add_to_cache(inicio,tipo,path)
             return path
     
     return None
@@ -82,6 +83,7 @@ def BFS_tipo(cidade: Cidade, inicio, tipo):
                     while local != inicio:
                         local = parents[local]
                         path.insert(0,local)
+                    cidade.add_to_cache(inicio,tipo,path)
                     return path
                 elif local not in queue:
                     queue.append(local)
@@ -156,6 +158,7 @@ def aStar_tipo(cidade: Cidade, inicio, tipo, autonomia, h: Hora):
                 curr = parents[curr]
             path.append(inicio)
             path.reverse()
+            cidade.add_to_cache(inicio,tipo,path)
             return path
 
         queue.remove(n)
@@ -235,6 +238,7 @@ def greedy_tipo(cidade: Cidade, inicio, tipo, h: Hora):
                 curr = parents[curr]
             path.append(inicio)
             path.reverse()
+            cidade.add_to_cache(inicio,tipo,path)
             return path
 
         queue.remove(n)

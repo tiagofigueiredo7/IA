@@ -1,10 +1,15 @@
-C1,Eletrico,300,300,4,0.15,5,true,Estacao Central 1,L1,Estacao_Carregamento,45
-C2,Eletrico,200,200,1,0.12,3,true,Estacao Central 1,L1,Estacao_Carregamento,25
-C3,Eletrico,260,260,4,0.14,4,true,Estacao Central 1,L1,Estacao_Carregamento,30
-C4,Eletrico,200,200,1,0.10,3,true,Estacao Central 1,L1,Estacao_Carregamento,25
-C5,Eletrico,320,320,4,0.16,5,true,Estacao Central 1,L1,Estacao_Carregamento,50
-C6,Combustao,700,700,8,0.5,10,true,Estacao Central 2,L1,Posto_Combustivel,10
-C7,Combustao,450,450,4,0.22,8,true,Estacao Central 2,L1,Posto_Combustivel,5
-C8,Combustao,300,300,8,0.3,12,true,Estacao Central 2,L1,Posto_Combustivel,5
-C9,Combustao,500,500,4,0.25,9,true,Estacao Central 2,L1,Posto_Combustivel,5
-C10,Combustao,750,750,8,0.6,11,true,Estacao Central 2,L1,Posto_Combustivel,10
+1,Eletrico,300,4,0.15,5,BP 1,10
+2,Eletrico,350,1,0.12,3,BP 1,10
+3,Eletrico,350,4,0.14,4,BP 1,15
+4,Eletrico,400,1,0.10,3,BP 1,15
+5,Eletrico,420,4,0.16,5,BP 1,20
+6,Eletrico,450,4,0.15,5,BP 1,20
+7,Eletrico,500,1,0.12,3,BP 1,25
+8,Combustao,260,4,0.14,4,BP 1,2
+9,Combustao,200,1,0.10,3,BP 1,1
+10,Combustao,320,4,0.16,5,BP 1,2
+11,Combustao,700,8,0.5,10,BP 2,1
+12,Combustao,450,4,0.22,8,BP 2,2
+13,Combustao,300,8,0.3,12,BP 2,1
+14,Combustao,500,4,0.25,9,BP 2,2
+15,Combustao,750,8,0.6,11,BP 2,1

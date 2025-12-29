@@ -1,5 +1,6 @@
 import networkx as nx 
 import matplotlib.pyplot as plt
+import random as rd
 from classes.Tipo_Localizacao import Tipo_Localizacao as tl
 from classes.Localizacao import Localizacao 
 from classes.Hora import Hora
@@ -63,34 +64,37 @@ class Cidade:
         self.adicionar_caminho("Chorente","Panque",1)
         self.adicionar_caminho("Panque","Vila Frescainha",6)
         self.adicionar_caminho("Alvito","Vila Frescainha",3)
-        self.adicionar_caminho("Aguiar","Panque",5)
+        self.adicionar_caminho("Aguiar","Panque",4)
         self.adicionar_caminho("Várzea","Alvito",2)
 
         self.adicionar_caminho("Vila Boa", "BP 1", 1)
-        self.adicionar_caminho("Barcelos", "Galp 1", 5)
+        self.adicionar_caminho("Barcelos", "Galp 1", 1)
         self.adicionar_caminho("Várzea", "Moeve 1", 3)
         self.adicionar_caminho("Rio Covo", "Moeve 1", 2)
         self.adicionar_caminho("Silva", "Shell 1", 4)
         self.adicionar_caminho("Barcelinhos", "Repsol 1", 2)
         self.adicionar_caminho("Lijó", "BP 1", 3)
-        self.adicionar_caminho("Alvito", "Galp 2", 3)
+        self.adicionar_caminho("Alvito", "Galp 2", 1)
         self.adicionar_caminho("Balugães", "BP 2", 4)
         self.adicionar_caminho("Panque", "Moeve 2", 2)
         self.adicionar_caminho("Chorente", "Shell 2", 1)
         self.adicionar_caminho("Aguiar", "Repsol 2", 2) 
-        self.adicionar_caminho("Aguiar","Silva",5)
-        self.adicionar_caminho("Balugães","Chorente",6)
+        self.adicionar_caminho("Aguiar","Silva",4)
+        self.adicionar_caminho("Balugães","Chorente",3)
 
-        self.adicionar_caminho("Barcelos", "Mercadona 1", 5)
+        self.adicionar_caminho("Barcelos", "Mercadona 1", 1)
         self.adicionar_caminho("Chorente", "Intermarche 2",2)
         self.adicionar_caminho("Silva","Intermarche 3",4)
-        self.adicionar_caminho("Barcelos", "Intermarche 1", 5)
+        self.adicionar_caminho("Barcelos", "Intermarche 1", 3)
         self.adicionar_caminho("Barcelos", "Campo da Feira", 1)
         self.adicionar_caminho("Aguiar", "Mercadona 2", 4)
-        self.adicionar_caminho("Panque", "Mercadona 3", 6)
-        self.adicionar_caminho("Lijó","Mercadona 3", 4)
+        self.adicionar_caminho("Panque", "Mercadona 3", 3)
+        self.adicionar_caminho("Lijó","Mercadona 3", 2)
         self.adicionar_caminho("Vila Frescainha", "Intermarche 2", 3)
-        self.adicionar_caminho("Arcozelo", "Campo da Feira", 3)
+        self.adicionar_caminho("Arcozelo", "Campo da Feira", 2)
+        
+        for l in self.locais:
+            self.transito[l.getName()] = len(self.vizinhos[l.getName()])/2
 
     # Devolve lista dos locais/pontos da cidade
     def getLocais(self):
@@ -142,13 +146,15 @@ class Cidade:
         return None
 
     # Calcula a distância e tempo esperado de um caminho
-    def calcular_distancia_tempo(self, caminho: list, h: Hora): # caminho é uma lista de nodos
+    def calcular_distancia_tempo(self, caminho: list, h: Hora, tempo_extra: int): # caminho é uma lista de nodos
         d = 0
-        t = 0
-        for i in range(len(caminho)-1):
-            aux = self.get_distancia(caminho[i], caminho[i + 1])
-            d = d + aux
-            t = t + aux + (self.get_transito(caminho[i],h)/2)
+        t = []
+        if len(caminho) > 0:
+            for i in range(len(caminho)-1):
+                aux = self.get_distancia(caminho[i], caminho[i + 1])
+                d += aux
+                t.append(d + self.get_transito(caminho[i],h)) # o tempo que vai ficar em cada ponto
+            t.append(tempo_extra) ## o tempo que vai ficar no destino (usado nos abastecimentos)
         return d, t
     
     # Desenha a cidade
@@ -161,7 +167,7 @@ class Cidade:
                 g.add_edge(n, v, weight=d)
 
         pos = nx.spring_layout(g)
-        nx.draw_networkx(g, pos, with_labels=True, font_weight='bold')
+        nx.draw_networkx(g, pos, arrows=True, with_labels=True, font_weight='bold')
         labels = nx.get_edge_attributes(g, 'weight')
         nx.draw_networkx_edge_labels(g, pos, edge_labels=labels)
         plt.draw()
@@ -172,13 +178,11 @@ class Cidade:
         self.transito[local] = estima
 
     # Devolve o trânsito de um local a uma dada hora 
-    def get_transito(self, local, hora: Hora):
-        if local not in self.transito:
-            self.transito[local] = len(self.vizinhos[local]) # trânsito em função do nr de vizinhos
-        if hora.eHoraPonta():
-            return self.transito[local]*2 # é o dobro em hora de ponta
+    def get_transito(self, local: str, hora: Hora):
+        if hora.eHoraPonta(): # é o dobro em hora de ponta
+            return self.transito[local] * 2
         return self.transito[local]
     
     # Adiciona caminho à cache para não ter de ser recalculado
-    def add_to_cache(self, inicio, fim, path:list):
+    def add_to_cache(self, inicio: str, fim: str, path: list):
         (self.cache[inicio])[fim] = path

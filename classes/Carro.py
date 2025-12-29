@@ -1,5 +1,3 @@
-from classes.Localizacao import Localizacao
-
 class Carro:
      def __init__(
         self, 
@@ -21,7 +19,9 @@ class Carro:
         self.impacto_ambiental = impacto_ambiental
         self.localizacao = localizacao
         self.tempo_reabastecimento = tempo_reabastecimento
-        self.tempo_ate_disponibilidade = 0
+        self.rota = []
+        self.tempo_rota = [] 
+        self.nr_passageiros = 0
 
      def getID(self):
           return self.id
@@ -51,7 +51,13 @@ class Carro:
           return self.tempo_reabastecimento
      
      def getTempoAteDisponivel(self):
-          return self.tempo_ate_disponibilidade
+          td = 0
+          for t in self.tempo_rota:
+               td += t 
+          return td
+     
+     def getNrPassageiros(self):
+          return self.nr_passageiros
      
      def setID(self, id):
           self.id = id
@@ -77,43 +83,62 @@ class Carro:
      def setLocalizacao(self, localizacao):
           self.localizacao = localizacao
 
-     def setTempoAteDisponivel(self, t):
-          self.tempo_ate_disponibilidade = t
+     def setRota(self, rota, t):
+          self.rota = rota
+          self.tempo_rota = t
+
+     def incRota(self, rota, t):
+          self.rota.pop()
+          self.tempo_rota.pop()
+          self.rota += rota
+          self.tempo_rota += t
+
+     def setNrPassageiros(self, n):
+          self.nr_passageiros = n
+
+     def incNrPassageiros(self, n):
+          self.nr_passageiros += n
+
+     def naRota(self, path:list):
+          if len(self.rota) > len(path):
+               t = 0
+               for i in range(len(self.rota)-len(path)+1):
+                    if self.rota[i:i+len(path)] == path:
+                         return t
+                    else:
+                         t += self.tempo_rota[i]
+          return -1
 
      def decTempoAteDisponivel(self):
-          self.tempo_ate_disponibilidade = self.tempo_ate_disponibilidade - 1
+          if len(self.rota) > 0:
+               if self.tempo_rota[0] > 1:
+                    self.tempo_rota[0] -= 1
+               else:
+                    self.rota.pop(0)
+                    self.tempo_rota.pop(0)
+                    if len(self.rota) > 0:
+                         self.localizacao = self.rota[0] ## atualizar localização do veículo
+                    if len(self.rota) <= 1 or self.tempo_rota[0] < 1: ### pausa para deixar passageiro antes de abastecer p.ex
+                         self.nr_passageiros = 0
+     
+     def disponivel(self):
+          return len(self.rota) == 0
 
      def __str__(self):
-          return f"Carro(ID: {self.id}, Tipo: {self.tipo}, Autonomia Max: {self.autonomia_max}, Autonomia Atual: {self.autonomia_atual}, Capacidade Passageiros: {self.capacidade_passageiros}, Custo KM: {self.custo_km}, Impacto Ambiental: {self.impacto_ambiental}, Disponibilidade: {self.disponibilidade}, Localizacao: {self.localizacao}, Tempo Reabastecimento: {self.tempo_reabastecimento})"
+          return f"Carro {self.tipo} (ID: {self.id}, Autonomia Max: {self.autonomia_max}, Autonomia Atual: {self.autonomia_atual}, Capacidade Passageiros: {self.capacidade_passageiros}, Custo KM: {self.custo_km}, Impacto Ambiental: {self.impacto_ambiental}, Localizacao: {self.localizacao}, Tempo Reabastecimento: {self.tempo_reabastecimento})"
      
      def reabastecer(self):
           self.autonomia_atual = self.autonomia_max
      
-     # @staticmethod
-     # def parse_car(linha):
-     #      id = linha[0]
-     #      tipo = linha[1]
-     #      autonomia_max = float(linha[2])
-     #      autonomia_atual = float(linha[3]) ## em vez de ser parte do CSV podiamos assumir q o deposito está cheio inicialmente
-     #      capacidade_passageiros = int(linha[4])
-     #      custo_km = float(linha[5])
-     #      impacto_ambiental = float(linha[6])
-     #      disponibilidade = linha[7].lower() == 'true' ## se separarmos carros por disponibilidade n será necessario
+     @staticmethod
+     def parse_car(linha):
+          id = linha[0]
+          tipo = linha[1]
+          autonomia_max = float(linha[2])
+          capacidade = int(linha[3])
+          custo_km = float(linha[4])
+          impacto_ambiental = float(linha[5])
+          localizacao = linha[6]
+          reabastecimento = int(linha[7])
 
-     #      #localizacao = Localizacao.parse_localizacao(linha[8:11])
-     #      localizacao = linha[8]
-     #      tempo_reabastecimento = int(linha[9])
-     #      #tempo_reabastecimento = int(linha[11])
-
-     #      return Carro(
-     #           id,
-     #           tipo,
-     #           autonomia_max,
-     #           autonomia_atual,
-     #           capacidade_passageiros,
-     #           custo_km,
-     #           impacto_ambiental,
-     #           disponibilidade,
-     #           localizacao,
-     #           tempo_reabastecimento
-     #      )
+          return Carro(id,tipo,autonomia_max,capacidade,custo_km,impacto_ambiental,localizacao,reabastecimento)
