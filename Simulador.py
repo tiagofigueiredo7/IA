@@ -88,36 +88,43 @@ class Simulador:
      # Se sim, devolve um tuplo: (km's até origem, minutos até origem, km's até destino, minutos até destino)
      # Para evitar ter que recalcular estes valores
      def capaz_de_responder(self, carro: Carro, pedido: Pedido):
-          if pedido.getNumPassageiros() <= carro.getCapacidadePassageiros() + carro.getNrPassageiros():
-               path1 = self.usar_algoritmo(carro.getLocalizacao(),pedido.getOrigem()).copy()
-               path1.pop()
-               path2 = self.usar_algoritmo(pedido.getOrigem(),pedido.getDestino())
-               t1 = carro.naRota(path1+path2) 
-               if t1 in range(pedido.getTempoEsperaMax()): ## se conseguir dar boleia a tempo
-                    self.partilha_boleia += 1
-                    return 0,[t1],0,0,None # não são gastos recursos extra!   
+          path2 = self.usar_algoritmo(pedido.getOrigem(),pedido.getDestino())
+          # tentar partilhar boleia
+          if len(carro.rota) > 0:
+               path1 = self.usar_algoritmo(carro.getLocalizacao(),pedido.getOrigem())
+               rota = path1[0:len(path1)-1]+path2
+               t1 = carro.naRota(rota,pedido.getNumPassageiros()) 
+               if t1 in range(pedido.getTempoEsperaMax()): ## se conseguir a tempo
+                    self.partilha_boleia += 1  # não são gastos recursos extra!   
+                    return 0,[t1],0,[],rota     # só é preciso o tempo de resposta
+          
+          # se tiver espaço para apanhar os passageiros depois da viagem atual ou estiver desocupado
+          if carro.getCapacidadePassageiros() >= pedido.getNumPassageiros():
+               path1 = self.usar_algoritmo(carro.getFimDaRota(),pedido.getOrigem())
                d1, t1 = self.cidade.calcular_distancia_tempo(path1,self.tempo,0)
                if carro.getTempoAteDisponivel() + sum(t1) <= pedido.getTempoEsperaMax():
                     d2,t2 = self.cidade.calcular_distancia_tempo(path2,self.tempo,0)
                     if d1+d2+20 <= carro.getAutonomiaAtual(): # evitar que carro fique "na reserva"
-                         return d1,t1,d2,t2,path1+path2
+                         t1.pop() # 0
+                         return d1,t1,d2,t2,(path1[0:len(path1)-1]+path2)               
 
           return None,None,None,None,None
 
 
      # Envia carro escolhido para cumprir pedido
-     def envia_carro(self, c: Carro, r):
+     def envia_carro(self, c: Carro, r, pedido: Pedido):
           self.pedidos_respondidos += 1
-          if r[4]: ### se não for boleia partilhada
+          if r[2] > 0: ### se não for boleia partilhada
                d = r[0] + r[2]
                c.setAutonomiaAtual(c.getAutonomiaAtual() - d)
                self.emissoes += (c.getImpactoAmbiental() * d)
                self.custos += (c.getCustoKM() * d)
                self.km_sem_passageiros += r[0]
-               c.setRota(r[4],r[1]+r[3]) ### muda rota e e tempo até estar disponivel
-               self.tempo_resposta += sum(r[1])
+               c.setRota(r[4],r[1]+r[3],pedido.getNumPassageiros(),pedido.getOrigem())
                if c.getAutonomiaAtual() < 50:
                     self.abastecer(c)
+          else:
+               c.incNrPassageiros(pedido.getNumPassageiros(),pedido.getOrigem(),pedido.getDestino(),0)
           self.tempo_resposta += sum(r[1])
 
 
@@ -161,8 +168,7 @@ class Simulador:
                               veiculo_escolhido = ve
 
           if veiculo_escolhido:
-               veiculo_escolhido.incNrPassageiros(pedido.getNumPassageiros())
-               self.envia_carro(veiculo_escolhido,r)
+               self.envia_carro(veiculo_escolhido,r,pedido)
                if pedido.preferenciaAmbiental and veiculo_escolhido.getTipo()=="Eletrico":
                     self.ambiental_eletrico += 1
           else:
@@ -196,7 +202,7 @@ class Simulador:
                     self.veiculos.remove(carro) # carro passa a ser inútil
                else:
                     carro.reabastecer()
-                    carro.incRota(path,t)
+                    carro.setRota(path,t,0,None)
                     self.emissoes += (carro.getImpactoAmbiental() * d)
                     self.custos += (carro.getCustoKM() * d)
                     self.km_sem_passageiros += d
@@ -260,5 +266,5 @@ class Simulador:
 
           fim.set()     # termina a execução da thread que lidava com os pedidos
           print(f"Simulação terminada às {self.tempo}h\n")
-          time.sleep(2)
+          time.sleep(5)
           self.calcular_estatisticas()

@@ -64,7 +64,7 @@ def main():
                break 
           print("\nERRO: Escolha uma opção válida (um número entre 1 e 4)\n")
      
-     for algoritmo in [3,2,1,0]:#range(4):
+     for algoritmo in range(4):
           Simulador(carros.copy(),pedidos.copy(),Hora(6,0),cidade,algoritmo+1,modo).run()
           cidade = Cidade()
 

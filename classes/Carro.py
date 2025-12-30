@@ -21,7 +21,7 @@ class Carro:
         self.tempo_reabastecimento = tempo_reabastecimento
         self.rota = []
         self.tempo_rota = [] 
-        self.nr_passageiros = 0
+        self.passageiros = [] ### nr passageiros em cada local
 
      def getID(self):
           return self.id
@@ -57,7 +57,17 @@ class Carro:
           return td
      
      def getNrPassageiros(self):
-          return self.nr_passageiros
+          if len(self.passageiros) > 0:
+               return self.passageiros[0]
+          return 0
+     
+     def getRota(self):
+          return list(zip(self.rota,self.tempo_rota,self.passageiros))
+     
+     def getFimDaRota(self):
+          if len(self.rota) > 0:
+               return self.rota[-1]
+          return self.localizacao
      
      def setID(self, id):
           self.id = id
@@ -83,43 +93,53 @@ class Carro:
      def setLocalizacao(self, localizacao):
           self.localizacao = localizacao
 
-     def setRota(self, rota, t):
-          self.rota = rota
-          self.tempo_rota = t
+     # atualiza rota do veículo
+     def setRota(self, rota, tempo, nr_passageiros, origem):
+          start = len(self.rota)
+          if start > 0:
+               self.rota.pop()
+               tempo[0] += self.tempo_rota.pop()
+               start -= 1
 
-     def incRota(self, rota, t):
-          self.rota.pop()
-          self.tempo_rota.pop()
           self.rota += rota
-          self.tempo_rota += t
+          self.tempo_rota += tempo
+          self.passageiros += ([0] * len(rota))
+          if nr_passageiros > 0:
+               self.incNrPassageiros(nr_passageiros,origem,rota[-1],start)
+          
+          if len(self.rota) != len(self.tempo_rota):
+               print(self.rota)
+               print(self.tempo_rota)
 
-     def setNrPassageiros(self, n):
-          self.nr_passageiros = n
+     # usado no caso de boleia partilhada, para alterar nr de passageiros que entram ou saem
+     def incNrPassageiros(self, nr: int, origem:str, destino:str, start: int):
+          entrada = self.rota.index(origem,start)
+          saida = self.rota.index(destino,entrada+1)
+          for i in range(entrada,saida):
+               self.passageiros[i] += nr 
 
-     def incNrPassageiros(self, n):
-          self.nr_passageiros += n
-
-     def naRota(self, path:list):
+     # se passageiro se encontrar na rota do veículo, devolve o tempo que demora a apanhá-lo
+     def naRota(self, path: list, nr_passageiros: int):
           if len(self.rota) > len(path):
                t = 0
                for i in range(len(self.rota)-len(path)+1):
-                    if self.rota[i:i+len(path)] == path:
+                    if self.rota[i:i+len(path)] == path and [(p+nr_passageiros)<=self.capacidade_passageiros for p in (self.passageiros[i:i+len(path)])]:
                          return t
                     else:
                          t += self.tempo_rota[i]
           return -1
 
+     # passa um minuto - atualiza rota e tempo até veículo se encontrar disponível
      def decTempoAteDisponivel(self):
-          if len(self.rota) > 0:
+          if len(self.rota) > 0:     
                if self.tempo_rota[0] > 1:
                     self.tempo_rota[0] -= 1
                else:
                     self.rota.pop(0)
                     self.tempo_rota.pop(0)
+                    self.passageiros.pop(0)
                     if len(self.rota) > 0:
                          self.localizacao = self.rota[0] ## atualizar localização do veículo
-                    if len(self.rota) <= 1 or self.tempo_rota[0] < 1: ### pausa para deixar passageiro antes de abastecer p.ex
-                         self.nr_passageiros = 0
      
      def disponivel(self):
           return len(self.rota) == 0

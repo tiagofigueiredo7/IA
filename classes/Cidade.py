@@ -66,6 +66,8 @@ class Cidade:
         self.adicionar_caminho("Alvito","Vila Frescainha",3)
         self.adicionar_caminho("Aguiar","Panque",4)
         self.adicionar_caminho("Várzea","Alvito",2)
+        self.adicionar_caminho("Aguiar","Silva",4)
+        self.adicionar_caminho("Balugães","Chorente",3)
 
         self.adicionar_caminho("Vila Boa", "BP 1", 1)
         self.adicionar_caminho("Barcelos", "Galp 1", 1)
@@ -79,8 +81,6 @@ class Cidade:
         self.adicionar_caminho("Panque", "Moeve 2", 2)
         self.adicionar_caminho("Chorente", "Shell 2", 1)
         self.adicionar_caminho("Aguiar", "Repsol 2", 2) 
-        self.adicionar_caminho("Aguiar","Silva",4)
-        self.adicionar_caminho("Balugães","Chorente",3)
 
         self.adicionar_caminho("Barcelos", "Mercadona 1", 1)
         self.adicionar_caminho("Chorente", "Intermarche 2",2)
@@ -94,7 +94,7 @@ class Cidade:
         self.adicionar_caminho("Arcozelo", "Campo da Feira", 2)
         
         for l in self.locais:
-            self.transito[l.getName()] = len(self.vizinhos[l.getName()])/2
+            self.transito[l.getName()] = round(len(self.vizinhos[l.getName()])/2)
 
     # Devolve lista dos locais/pontos da cidade
     def getLocais(self):
@@ -153,7 +153,7 @@ class Cidade:
             for i in range(len(caminho)-1):
                 aux = self.get_distancia(caminho[i], caminho[i + 1])
                 d += aux
-                t.append(d + self.get_transito(caminho[i],h)) # o tempo que vai ficar em cada ponto
+                t.append(aux + self.get_transito(caminho[i],h)) # o tempo que vai ficar em cada ponto
             t.append(tempo_extra) ## o tempo que vai ficar no destino (usado nos abastecimentos)
         return d, t
     
