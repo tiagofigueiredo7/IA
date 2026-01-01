@@ -150,6 +150,8 @@ class Simulador:
                          if (t1 != None and (r == None or sum(r[1]) > sum(t1))):
                               r = (d1,t1,d2,t2,path)
                               veiculo_escolhido = ve
+                              if sum(t1) == 0:
+                                   break
                case 3:   ### modo económico - envia o veículo mais barato
                     d = 0
                     for ve in frota:
@@ -158,6 +160,8 @@ class Simulador:
                               d = ve.getCustoKM()*(d1+d2)
                               r = (d1,t1,d2,t2,path)
                               veiculo_escolhido = ve
+                              if d == 0:
+                                   break # não precisa de procurar mais
                case _:   ### modo ambiental - envia o veículo menos poluente
                     e = 0
                     for ve in frota:
@@ -166,6 +170,8 @@ class Simulador:
                               e = ve.getImpactoAmbiental()*(d1+d2)
                               r = (d1,t1,d2,t2,path)
                               veiculo_escolhido = ve
+                              if e == 0:
+                                   break # não precisa de procurar mais
 
           if veiculo_escolhido:
                self.envia_carro(veiculo_escolhido,r,pedido)
@@ -265,6 +271,7 @@ class Simulador:
                self.passaMinuto()
 
           fim.set()     # termina a execução da thread que lidava com os pedidos
-          print(f"Simulação terminada às {self.tempo}h\n")
           time.sleep(5)
+          print(f"Simulação terminada às {self.tempo}h\n")
           self.calcular_estatisticas()
+          self.cidade.clear_cache() ### para não passar rotas de uma simulação para outra

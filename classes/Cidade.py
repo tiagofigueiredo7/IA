@@ -93,8 +93,16 @@ class Cidade:
         self.adicionar_caminho("Vila Frescainha", "Intermarche 2", 3)
         self.adicionar_caminho("Arcozelo", "Campo da Feira", 2)
         
-        for l in self.locais:
-            self.transito[l.getName()] = round(len(self.vizinhos[l.getName()])/2)
+        for l,v in self.vizinhos.items():
+            self.set_transito(l,round(len(v)/2))
+
+        self.clima = {} # clima definido para o dia
+        for h in range(24): ## em cada hora, caso o clima seja mau, o transito pode dobrar
+            if rd.randint(1,5) == 5: # 20% probabilidade de mau tempo
+                self.clima[h] = 2
+            else:
+                self.clima[h] = 1
+
 
     # Devolve lista dos locais/pontos da cidade
     def getLocais(self):
@@ -148,13 +156,14 @@ class Cidade:
     # Calcula a distância e tempo esperado de um caminho
     def calcular_distancia_tempo(self, caminho: list, h: Hora, tempo_extra: int): # caminho é uma lista de nodos
         d = 0
-        t = []
+        t = [] # lista com o tempo que vai ficar em cada ponto da rota 
         if len(caminho) > 0:
             for i in range(len(caminho)-1):
                 aux = self.get_distancia(caminho[i], caminho[i + 1])
                 d += aux
-                t.append(aux + self.get_transito(caminho[i],h)) # o tempo que vai ficar em cada ponto
-            t.append(tempo_extra) ## o tempo que vai ficar no destino (usado nos abastecimentos)
+                # tempo = distantância até próximo ponto + trânsito
+                t.append(aux + (self.get_transito(caminho[i],h)))
+            t.append(tempo_extra)
         return d, t
     
     # Desenha a cidade
@@ -174,15 +183,25 @@ class Cidade:
         plt.show()
 
     # Adiciona trânsito a um local
-    def adicionarTransito(self, local, estima):
+    def set_transito(self, local, estima):
         self.transito[local] = estima
 
-    # Devolve o trânsito de um local a uma dada hora 
+    # Devolve trânsito de um local a uma dada hora 
     def get_transito(self, local: str, hora: Hora):
+        t = self.transito[local]
         if hora.eHoraPonta(): # é o dobro em hora de ponta
-            return self.transito[local] * 2
-        return self.transito[local]
+            t = t * 2
+        return t * (self.clima[hora.getHora()]) # pode dobrar, se estiver mau tempo
     
     # Adiciona caminho à cache para não ter de ser recalculado
     def add_to_cache(self, inicio: str, fim: str, path: list):
         (self.cache[inicio])[fim] = path
+    
+    # Limpa a cache para iniciar nova simulação
+    def clear_cache(self):
+        for k in self.cache.keys():
+            self.cache[k] = dict()
+
+    # Se está mau tempo em dada hora
+    def mau_tempo(self, h:Hora):
+        return self.clima[h.getHora()] == 2

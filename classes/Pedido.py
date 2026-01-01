@@ -56,3 +56,11 @@ class Pedido:
           tempoEsperaMax = int(linha[5])
 
           return Pedido(origem, destino, numPassageiros, prioridade, preferenciaAmbiental, tempoEsperaMax)
+     
+     def serialize_pedido(self):
+          return [self.origem,
+               self.destino,
+               self.numPassageiros,
+               'alta' if self.prioridade else 'baixa',
+               'sim' if self.preferenciaAmbiental else 'nao',
+               self.tempoEsperaMax]

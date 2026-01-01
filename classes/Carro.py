@@ -162,3 +162,13 @@ class Carro:
           reabastecimento = int(linha[7])
 
           return Carro(id,tipo,autonomia_max,capacidade,custo_km,impacto_ambiental,localizacao,reabastecimento)
+     
+     def serialize_carro(self):
+          return [self.id,
+               self.tipo,
+               self.autonomia_max,
+               self.capacidade_passageiros,
+               self.custo_km,
+               self.impacto_ambiental,
+               self.localizacao,
+               self.tempo_reabastecimento]
