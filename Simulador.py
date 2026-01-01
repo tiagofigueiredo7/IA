@@ -47,7 +47,6 @@ class Simulador:
                i = 0
                while i < len(queue) and queue[i].getTempoEsperaMax() <= novo_pedido.getTempoEsperaMax():
                     i += 1
-
                queue.insert(i, novo_pedido)
 
 
@@ -77,9 +76,9 @@ class Simulador:
                     case 2:
                          return DFS(self.cidade,o,d,[],set())
                     case 3:
-                         return aStar(self.cidade,o,d,self.tempo)
+                         return aStar(self.cidade,o,d)
                     case _:
-                         return greedy(self.cidade,o,d,self.tempo)
+                         return greedy(self.cidade,o,d)
           else:
                return (self.cidade.cache[o]).get(d)
 
@@ -195,9 +194,9 @@ class Simulador:
                     case 2:
                          path = DFS_tipo(self.cidade,carro.getLocalizacao(),tipo,[],set())
                     case 3:
-                         path = aStar_tipo(self.cidade,carro.getLocalizacao(),tipo, carro.getAutonomiaAtual(),self.tempo)
+                         path = aStar_tipo(self.cidade,carro.getLocalizacao(),tipo, carro.getAutonomiaAtual())
                     case _:
-                         path = greedy_tipo(self.cidade,carro.getLocalizacao(),tipo,self.tempo)
+                         path = greedy_tipo(self.cidade,carro.getLocalizacao(),tipo)
           else:
                path = (self.cidade.cache[carro.getLocalizacao()]).get(tipo)
 

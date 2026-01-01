@@ -5,6 +5,7 @@ import random
 
 pontos_coleta = ["Arcozelo","Barcelos","Rio Covo","Barcelinhos","Vila Boa","Silva","Lijó","Vila Frescainha","Várzea","Aguiar","Balugães","Chorente","Alvito","Panque"]
 
+# Gera um dado número de veículos elétricos e de veículos a combustão
 def gerar_frota(nr_eletricos, nr_combustao):
      carros = []
      for i in range(nr_eletricos):
@@ -27,7 +28,7 @@ def gerar_frota(nr_eletricos, nr_combustao):
           
      return carros
 
-
+# Gera um dado número de pedidos de boleia
 def gerar_pedidos(nr_pedidos):
      pedidos = []
      for _ in range(nr_pedidos):
@@ -47,21 +48,17 @@ def gerar_pedidos(nr_pedidos):
      
      return pedidos
 
-# Gera CSVs
-def main():
-    carros = gerar_frota(15,30)
-    pedidos = gerar_pedidos(1000)
-    with open('data/Veiculos.csv', 'w', newline='') as file:
-        escritor = csv.writer(file, delimiter=',')
-        for carro in carros:
-            escritor.writerow(carro.serialize_carro())
-    print("Veículos gerados!")
-    with open('data/Pedidos.csv', 'w', newline='') as file:
-        escritor = csv.writer(file, delimiter=',')
-        for pedido in pedidos:
-            escritor.writerow(pedido.serialize_pedido())
-    print("Pedidos gerados!")
-
-
-if __name__ == "__main__":
-    main()
+# Gera e armazena novos dados nos ficheiros CSV
+def gerar_dados(veiculos_eletricos: int, nr_combustao: int , nr_pedidos: int):
+     carros = gerar_frota(veiculos_eletricos,nr_combustao)
+     with open('data/Veiculos.csv', 'w', newline='') as file:
+          escritor = csv.writer(file, delimiter=',')
+          for carro in carros:
+               escritor.writerow(carro.serialize_carro())
+     pedidos = gerar_pedidos(nr_pedidos)
+     with open('data/Pedidos.csv', 'w', newline='') as file:
+          escritor = csv.writer(file, delimiter=',')
+          for pedido in pedidos:
+               escritor.writerow(pedido.serialize_pedido())
+     
+     return carros, pedidos

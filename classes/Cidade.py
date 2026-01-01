@@ -120,9 +120,8 @@ class Cidade:
         return lista
 
     # Adiciona ponto/local à cidade
-    def adicionar_ponto(self, nome, tipo): # id determinado pela cidade
-        id = len(self.locais) + 1
-        p = Localizacao(nome,id,tipo)
+    def adicionar_ponto(self, nome, tipo):
+        p = Localizacao(nome,tipo)
         self.locais.append(p)
         self.vizinhos[nome] = []
         self.cache[nome] = dict() ## dicionário para adicionar rotas a partir deste local
@@ -162,7 +161,7 @@ class Cidade:
                 aux = self.get_distancia(caminho[i], caminho[i + 1])
                 d += aux
                 # tempo = distantância até próximo ponto + trânsito
-                t.append(aux + (self.get_transito(caminho[i],h)))
+                t.append(aux + (self.get_transito_atual(caminho[i],h)))
             t.append(tempo_extra)
         return d, t
     
@@ -186,8 +185,12 @@ class Cidade:
     def set_transito(self, local, estima):
         self.transito[local] = estima
 
+    # Devolve trânsito mínimo de um local 
+    def get_transito(self, local: str):
+        return self.transito[local]
+
     # Devolve trânsito de um local a uma dada hora 
-    def get_transito(self, local: str, hora: Hora):
+    def get_transito_atual(self, local: str, hora: Hora):
         t = self.transito[local]
         if hora.eHoraPonta(): # é o dobro em hora de ponta
             t = t * 2

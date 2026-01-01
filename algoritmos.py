@@ -1,6 +1,4 @@
-import time
 from classes.Cidade import Cidade
-from classes.Hora import Hora
 
 # Algoritmo de Procura em Profundidade (DFS)
 def DFS(cidade: Cidade, inicio, fim, path:list, visited:set):
@@ -90,7 +88,7 @@ def BFS_tipo(cidade: Cidade, inicio, tipo):
     return None
 
 # Algoritmo de Procura A*
-def aStar(cidade: Cidade, inicio, fim, h: Hora): 
+def aStar(cidade: Cidade, inicio, fim): 
     queue = set()
     queue.add(inicio)
     visited = set()
@@ -100,7 +98,7 @@ def aStar(cidade: Cidade, inicio, fim, h: Hora):
     while len(queue) > 0:
         n = None
         for q in queue:
-            if n == None or cost[q] + cidade.get_transito(q,h) < cost[n] + cidade.get_transito(n,h):
+            if n == None or cost[q] + cidade.get_transito(q) < cost[n] + cidade.get_transito(n):
                 n = q 
         
         queue.remove(n)
@@ -136,7 +134,7 @@ def aStar(cidade: Cidade, inicio, fim, h: Hora):
     return None
 
 
-def aStar_tipo(cidade: Cidade, inicio, tipo, autonomia, h: Hora):
+def aStar_tipo(cidade: Cidade, inicio, tipo, autonomia):
     queue = set()
     queue.add(inicio)
     visited = set()
@@ -147,7 +145,7 @@ def aStar_tipo(cidade: Cidade, inicio, tipo, autonomia, h: Hora):
         n = None
 
         for q in queue:
-            if n is None or cost[q] + cidade.get_transito(q,h) < cost[n] + cidade.get_transito(n,h):
+            if n is None or cost[q] + cidade.get_transito(q) < cost[n] + cidade.get_transito(n):
                 n = q
 
         if cidade.get_local(n).getTipo() == tipo and cost[n] <= autonomia:
@@ -181,7 +179,7 @@ def aStar_tipo(cidade: Cidade, inicio, tipo, autonomia, h: Hora):
     return None
 
 # Algoritmo de Procura Gulosa (Greedy)
-def greedy(cidade: Cidade, inicio, fim, h: Hora): 
+def greedy(cidade: Cidade, inicio, fim): 
     queue = set()
     queue.add(inicio)
     visited = set()
@@ -190,7 +188,7 @@ def greedy(cidade: Cidade, inicio, fim, h: Hora):
     while len(queue) > 0:
         n = None
         for q in queue:
-            if n == None or cidade.get_transito(q,h) < cidade.get_transito(n,h):
+            if n == None or cidade.get_transito(q) < cidade.get_transito(n):
                 n = q 
         
         queue.remove(n)
@@ -217,7 +215,7 @@ def greedy(cidade: Cidade, inicio, fim, h: Hora):
     return None
 
 
-def greedy_tipo(cidade: Cidade, inicio, tipo, h: Hora):
+def greedy_tipo(cidade: Cidade, inicio, tipo):
     queue = set()
     queue.add(inicio)
     visited = set()
@@ -227,7 +225,7 @@ def greedy_tipo(cidade: Cidade, inicio, tipo, h: Hora):
         n = None
 
         for q in queue:
-            if n is None or cidade.get_transito(q,h) < cidade.get_transito(n,h):
+            if n is None or cidade.get_transito(q) < cidade.get_transito(n):
                 n = q
 
         if cidade.get_local(n).getTipo() == tipo:
