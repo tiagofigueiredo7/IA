@@ -1,45 +1,45 @@
-0,Eletrico,372,3,2,0,Chorente,13
-1,Eletrico,456,3,2,0,Chorente,10
-2,Eletrico,326,2,1,1,Aguiar,23
-3,Eletrico,311,5,2,0,Alvito,17
-4,Eletrico,377,7,1,1,Aguiar,11
-5,Eletrico,377,7,1,0,Alvito,25
-6,Eletrico,402,4,1,0,Vila Frescainha,13
-7,Eletrico,321,5,1,0,Silva,12
-8,Eletrico,331,1,1,0,Barcelinhos,20
-9,Eletrico,445,6,1,0,Panque,21
-10,Eletrico,477,4,2,1,Barcelos,20
-11,Eletrico,471,6,2,0,Chorente,15
-12,Eletrico,429,6,1,1,Panque,17
-13,Eletrico,461,5,1,1,Várzea,14
-14,Eletrico,384,6,2,1,Várzea,15
-15,Combustao,682,3,5,8,Barcelos,1
-16,Combustao,716,5,3,6,Panque,1
-17,Combustao,574,7,3,14,Vila Boa,1
-18,Combustao,605,6,4,6,Panque,1
-19,Combustao,789,6,3,14,Panque,1
-20,Combustao,604,7,5,11,Barcelinhos,1
-21,Combustao,767,4,5,15,Rio Covo,1
-22,Combustao,516,2,4,5,Vila Boa,2
-23,Combustao,647,1,5,11,Vila Frescainha,1
-24,Combustao,687,3,4,7,Vila Frescainha,1
-25,Combustao,606,4,4,14,Chorente,1
-26,Combustao,785,1,3,8,Vila Boa,1
-27,Combustao,787,7,3,7,Balugães,2
-28,Combustao,728,4,5,12,Chorente,1
-29,Combustao,574,5,3,9,Várzea,1
-30,Combustao,760,4,5,7,Lijó,1
-31,Combustao,509,5,3,10,Chorente,1
-32,Combustao,526,6,4,15,Balugães,1
-33,Combustao,514,7,5,15,Vila Frescainha,2
-34,Combustao,776,4,5,11,Balugães,2
-35,Combustao,644,1,5,7,Panque,2
-36,Combustao,680,3,5,9,Barcelos,2
-37,Combustao,629,1,5,12,Balugães,2
-38,Combustao,556,6,4,11,Várzea,1
-39,Combustao,513,2,5,15,Balugães,2
-40,Combustao,534,6,5,13,Lijó,2
-41,Combustao,541,6,5,13,Alvito,2
-42,Combustao,777,2,4,15,Vila Boa,1
-43,Combustao,723,3,4,13,Rio Covo,2
-44,Combustao,733,3,5,13,Vila Frescainha,2
+0,Eletrico,348,7,1,1,Lijó,18
+1,Eletrico,492,3,1,1,Barcelos,14
+2,Eletrico,489,6,2,0,Panque,21
+3,Eletrico,427,5,2,0,Vila Frescainha,11
+4,Eletrico,344,7,1,0,Aguiar,22
+5,Eletrico,449,5,2,1,Aguiar,24
+6,Eletrico,320,7,1,0,Lijó,11
+7,Eletrico,345,6,2,1,Chorente,24
+8,Eletrico,341,2,1,0,Aguiar,16
+9,Eletrico,457,7,2,1,Alvito,12
+10,Eletrico,393,2,1,0,Lijó,20
+11,Eletrico,434,3,2,1,Barcelos,22
+12,Eletrico,422,3,2,0,Alvito,11
+13,Eletrico,473,1,2,0,Balugães,19
+14,Eletrico,467,5,1,0,Rio Covo,21
+15,Combustao,641,3,3,8,Barcelinhos,1
+16,Combustao,750,5,5,14,Aguiar,1
+17,Combustao,580,6,3,13,Balugães,2
+18,Combustao,753,3,5,6,Aguiar,2
+19,Combustao,507,2,5,9,Rio Covo,2
+20,Combustao,604,5,5,14,Panque,1
+21,Combustao,676,7,5,8,Aguiar,2
+22,Combustao,707,2,3,15,Panque,2
+23,Combustao,724,1,4,5,Vila Frescainha,2
+24,Combustao,515,6,3,13,Arcozelo,1
+25,Combustao,681,3,4,11,Barcelinhos,1
+26,Combustao,702,1,3,15,Arcozelo,1
+27,Combustao,655,4,3,10,Panque,2
+28,Combustao,698,2,3,7,Vila Frescainha,2
+29,Combustao,784,7,4,11,Vila Frescainha,2
+30,Combustao,585,4,4,5,Várzea,2
+31,Combustao,624,2,4,15,Chorente,1
+32,Combustao,786,5,4,15,Lijó,2
+33,Combustao,723,5,4,8,Lijó,2
+34,Combustao,713,1,3,5,Chorente,1
+35,Combustao,633,7,3,13,Alvito,1
+36,Combustao,554,4,4,6,Vila Frescainha,2
+37,Combustao,546,7,4,8,Chorente,1
+38,Combustao,706,2,5,11,Panque,1
+39,Combustao,722,4,5,13,Aguiar,1
+40,Combustao,610,6,3,8,Rio Covo,1
+41,Combustao,541,3,4,5,Lijó,2
+42,Combustao,786,7,4,12,Panque,2
+43,Combustao,750,7,4,13,Silva,2
+44,Combustao,797,4,5,6,Balugães,2

@@ -8,14 +8,14 @@ def main():
      cidade = Cidade()
      while True:
           print("Para esta simulação, pretende:")
-          print("[1] Gerar novos dados aleatórios")
-          print("[2] Usar veículos e pedidos previamente gerados")
+          print("[1] Usar veículos e pedidos previamente gerados")
+          print("[2] Gerar novos dados aleatórios")
           modo = int(input("\nA sua escolha é: "))
           if modo in range(1,3):
                break
           print("\nERRO: Escolha uma opção válida (1 ou 2)\n")
 
-     if modo == 1:
+     if modo == 2:
           carros, pedidos = gerar_dados(15,30,1000) # novos dados são criados e armazenados
      else:
           carros, pedidos = parser("data/Veiculos.csv", "data/Pedidos.csv") # dados lidos dos CSVs

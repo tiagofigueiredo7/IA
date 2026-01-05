@@ -203,7 +203,7 @@ class Simulador:
           if path:
                d,t = self.cidade.calcular_distancia_tempo(path,self.tempo,carro.getTempoReabastecimento())
                if d > carro.getAutonomiaAtual():
-                    print(f"Carro {carro.getID()} desativado.")
+                    print(f"[{self.tempo}] Carro {carro.getID()} desativado.")
                     self.veiculos.remove(carro) # carro passa a ser inútil
                else:
                     carro.reabastecer()
