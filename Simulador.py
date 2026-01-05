@@ -270,7 +270,6 @@ class Simulador:
                self.passaMinuto()
 
           fim.set()     # termina a execução da thread que lidava com os pedidos
-          time.sleep(5)
           print(f"Simulação terminada às {self.tempo}h\n")
           self.calcular_estatisticas()
           self.cidade.clear_cache() ### para não passar rotas de uma simulação para outra
