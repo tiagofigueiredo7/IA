@@ -7,8 +7,6 @@ Sistema de gestão de uma frota de táxis usando diferentes algoritmos de procur
 - [Tiago Silva Figueiredo](https://github.com/tiagofigueiredo7) (A106856)
 - [Inês Ferreira Ribeiro](https://github.com/inesferribeiro) (A104704)
 
-### Nota Final: ?? / 20 ⭐️
-
 ![Exemplo](image.png)
 
 ## Executável
@@ -26,8 +24,6 @@ Fleet management system for taxis using different search algorithms in dynamic s
 - [Luís António Peixoto Soares](https://github.com/luis7788) (A106932)
 - [Tiago Silva Figueiredo](https://github.com/tiagofigueiredo7) (A106856)
 - [Inês Ferreira Ribeiro](https://github.com/inesferribeiro) (A104704)
-
-### Final Grade: ?? / 20 ⭐️
 
 ## Executable
 To run the program, just do:
